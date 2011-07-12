@@ -1,0 +1,188 @@
+/* 
+    Document   : style
+    Created on : 27/06/2011, 11:06:15 AM
+    Author     : Peter
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+body {
+	background-color:white;
+	max-width: 1050px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: sans-serif;
+
+}
+#basic {
+	background-color: white;
+	border-width: 0px;
+	border-spacing: 0px;  
+}
+#first_line {
+	background-color: black;
+	color:white;
+	font-weight:bold;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+#first_line ul {
+	float:left;
+	list-style-type: none;
+	padding: 0px 0px 0px 0px;
+	margin:2px 2px 2px 2px;
+}
+#first_line li {
+	float: left;
+		text-decoration: none;
+		background-color: black;
+	color:white;
+	font-weight: bold;
+	margin: 0px 0px 0px 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+#first_line a:link {
+	text-decoration: none;
+		background-color: black;
+	color:white;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#first_line a:visited {
+	text-decoration: none;
+	background-color: black;
+	color:white;
+}
+
+#first_line a:hover {
+	background-color: white;
+	color: black;
+}
+
+#header {
+	background-color:#4343a4;
+	color: white;
+	margin: 0px 0px 0px 00px;
+	padding: 0px 0px 0px 10px;
+	border-width: 0px;
+	border-spacing: 0px;
+	font-weight:bold;
+	font-family: sans-serif;
+}
+#top_menu {
+	background-color:#4343a4;
+	color: white;
+	padding-left: 5px;
+}
+#top_menu ul {
+	list-style-type: none;
+	margin-bottom:0px;
+}
+#top_menu ul li {
+	float: left;
+}
+#top_menu li a:hover {
+	background-color: white;
+	color: black;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#top_menu a:link {
+	background-color: #4343a4;
+	color:white;
+	text-decoration:none;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#top_menu a:visited {
+	background-color: #4343a4;
+	color: white;
+}
+#left_status {
+	font-size: 12px;
+}
+#left_status input {
+	font-size:10px;
+}
+#left_menu {
+	background-color: #6699CC;
+	vertical-align:top;
+	padding-left: 10px;
+	padding-top: 10px;
+	width: 200px;
+}
+#left_menu ul {
+	float: left;
+	margin-top:0px;
+	margin-left: 0px;
+	padding-left: 0px;
+	margin-bottom: 0px;
+	list-style-type: none;
+}
+#left_menu li {
+	margin-left: 0px;
+	padding-bottom: 0px;
+}
+
+#content {
+	background-color:gainsboro;
+	min-height: 300px;
+	padding-left: 10px;
+}
+#test:hover {
+	background-color: yellow;
+}
+
+#footer {
+	background-color:#6699CC;
+	text-align: center;
+	padding: 2px 0px 2px 0px;
+}
+#page_title {
+	margin-top: 5px;
+	margin-left: 40px;
+	margin-bottom: 5px;
+	font-size: 20pt;
+}
+#error_msg {
+	background-color: red;
+	color: white;
+	font-weight:bold;
+}
+#success_msg {
+	background-color: green;
+	color: white;
+	font-weight: bold;
+}
+table {
+	border-collapse:collapse;
+}
+table th {
+	background-color: #99ccff;
+}
+
+#list_table td {
+	background-color: white;
+	border: 1px solid black;
+	margin: 1px 5px 1px 5px;
+	padding: 2px 5px 2px 5px;
+}
+#list_table th {
+	background-color:navajowhite;
+	border: 1px solid black;
+	padding: 2px 5px 2px 5px;
+}
+#main_logo {
+	font-size: 30px;
+	margin-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	padding: 0px 0px 0px 0px;
+}

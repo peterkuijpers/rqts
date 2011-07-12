@@ -7,19 +7,48 @@
   <?php echo $this->headLink()->appendStylesheet('/css/global.css') ?>
 </head>
 <body>
-<div id="header" style="background-color: #EEEEEE; height: 30px;">
-    <div id="header-logo" style="float: left">
-        <b>ZF Quickstart Application</b>
-    </div>
-    <div id="header-navigation" style="float: right">
-        <a href="<?php echo $this->url(
-            array('controller'=>'guestbook'),
-            'default',
-            true) ?>">Guestbook</a>
-    </div>
-</div>
-
-<?php echo $this->layout()->content ?>
-
+<table id="basic" width="100%">
+	<tr><td>
+	<table width="100%">
+		<tr id="first_line">
+			<td colspan="2" id="first_line">
+				<ul>
+					<li><a href="<?php echo $this->url(
+							array( 'controller' => 'index', ),
+							'default', true) ?>">Home</a>
+					</li>
+					<li>|</li>
+					<li><a href="">Cats</a></li>
+				</ul>
+				<ul style="float:right">
+					<li><?php echo $this->loggedInAs(); ?> </li>
+				</ul>
+			</td>
+		<tr id="header">
+			<td colspan="2">
+				<div id="main_logo">RQTS</p></div>
+			</td>
+		</tr>
+		<tr id="top_menu" >
+			<td width="200px"></td>
+			<td></td>
+		</tr>
+	</table></td></tr>
+	`<tr><td><table width="100%">
+		<tr>
+			<td id="left_menu" width="150px">
+				<?php echo $this->placeholder('sidebar') ?>
+			</td>
+			<td id="content">
+			<?php echo $this->layout()->content ?>
+			</td>
+		</tr>
+		<tr id="footer" >
+			<td></td>
+			<td id="footer">advance your standards - rqts &copy; 2011</td>
+		</tr>
+    </table>
+	</td></tr>
+</table>
 </body>
 </html>

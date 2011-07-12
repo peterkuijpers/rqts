@@ -1,15 +1,8 @@
+<div id="page_title"> Welcome </div>
+<hr />
 <p><a href="<?php echo $this->url(
     array(
-        'controller' => 'user',
-        'action'     => 'sign'
+        'controller' => 'cats',
     ),
     'default',
-    true) ?>">Sign Our Guestbook</a></p>
-
-User Entries: <br />
-<dl>
-    <?php foreach ($this->entries as $entry): ?>
-    <dt><?php echo $this->escape($entry->firstname) ?></dt>
-    <dd><?php echo $this->escape($entry->lastname) ?></dd>
-    <?php endforeach ?>
-</dl>
+    true) ?>">Cats</a></p>
