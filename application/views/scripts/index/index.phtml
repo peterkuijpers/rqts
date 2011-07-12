@@ -1,0 +1,15 @@
+<p><a href="<?php echo $this->url(
+    array(
+        'controller' => 'user',
+        'action'     => 'sign'
+    ),
+    'default',
+    true) ?>">Sign Our Guestbook</a></p>
+
+User Entries: <br />
+<dl>
+    <?php foreach ($this->entries as $entry): ?>
+    <dt><?php echo $this->escape($entry->firstname) ?></dt>
+    <dd><?php echo $this->escape($entry->lastname) ?></dd>
+    <?php endforeach ?>
+</dl>
