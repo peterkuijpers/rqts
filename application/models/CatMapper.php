@@ -19,22 +19,24 @@ class Application_Model_CatMapper
 	public function getDbTable()
     {
         if (null === $this->_dbTable) {
-            $this->setDbTable('Application_Model_DbTable_User');
+            $this->setDbTable('Application_Model_DbTable_Cat');
         }
         return $this->_dbTable;
     }
 
-    public function save(Application_Model_User $user)
+    public function save(Application_Model_Cat $cat)
     {
         $data = array(
-			'nickname' =>$user->getNickname(),
-			'password' => $user->getPassword(),
-			'firstname' =>$user->getFirstname(),
-			'lastname' =>$user->getLastname(),
-            'email'   => $user->getEmail(),
 			'id' => $user->getId(),
+			'initiatorid' =>$user->getInitiatorid(),
+			'initdate' =>$user->getInitdate(),
+			'focalid' => $user->getFocalid(),
+			'qaid' =>$user->getQaid(),
+			'statusid' =>$user->getStatusid(),
+			'summary' =>$user->getSummary(),
+            'details'   => $user->getDetails(),
+			
         );
-		//tweeked here
 		$id = $user->getId();
         if (null ===  $id ) {
             unset($data['id']);
@@ -53,11 +55,13 @@ class Application_Model_CatMapper
         }
         $row = $result->current();
         $user->setId($row->id)
-                  ->setNickname($row->nickname)
-                  ->setPassword($row->password)
-                  ->setFirstname($row->firstname)
-                  ->setLastname($row->lastname)
-                  ->setEmail($row->email);
+                  ->setInitiatorid($row->initiatorid )
+                  ->setInitdate($row->initdate )
+                  ->setFocalid($row->focalid)
+                  ->setQaid($row->qaid)
+                  ->setStatusid($row->statusid)
+                  ->setSummary($row->summary)
+				  ->setDetails( $row->details );
 		return $row->toArray();
     }
 
@@ -68,11 +72,13 @@ class Application_Model_CatMapper
         foreach ($resultSet as $row) {
             $entry = new Application_Model_User();
             $entry->setId($row->id)
-					->setNickname( $row->nickname)
-					->setPassword( $row->password)
-					->setFirstname( $row->firstname)
-					->setLastname( $row->lastname)
-					->setEmail($row->email);
+					->setInitiatorid( $row->Initiatorid)
+					->setInitdate( $row->Initdate)
+					->setFocalid( $row->focalid)
+					->setQaid( $row->qaid)
+					->setStatusid( $row->statusid)
+					->setSummary($row->summary)
+					->setDetails($row->details);
             $entries[] = $entry;
         }
         return $entries;
@@ -81,7 +87,6 @@ class Application_Model_CatMapper
 	public function delete( $id )
 	{
 		Zend_Debug::dump( $id );
-//		$where = $this->getDbTable()->getAdapter()->quoteInto('bug_id = ?', $id);
         $this->getDbTable()->delete( 'id = '.$id );
 	}
 
