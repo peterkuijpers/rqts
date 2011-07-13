@@ -5,24 +5,29 @@ class CatController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
     }
-   public function preDispatch()
+
+   public function postDispatch()
     {
 		$this->view->render('cat/_sidebar.phtml');
     }
-
 
     public function indexAction()
     {
         // action body
 		$cat = new Application_Model_CatMapper();
 		$this->view->entries = $cat->fetchAll();
+
+		//unregister cat
+		$nc = new Zend_Session_Namespace('cat');
+		unset( $nc->id);
     }
 
     public function updateAction()
     {
         // action body
+
+
 		$form = new Application_Form_Cat();
 //		$form->submit->setLabel('Save');
 		$this->view->form = $form;
@@ -32,6 +37,11 @@ class CatController extends Zend_Controller_Action
 				$cat = new Application_Model_Cat($formData);
 				$mapper  = new Application_Model_CatMapper();
 				$mapper->save($cat);
+
+				// add to registry
+				$nc = new Zend_Session_Namespace('cat');
+				$nc->id = $cat->getId();
+				echo $cat->getId();
 				$this->_helper->redirector('index');
 			} else {
 				$form->populate($formData);
@@ -43,9 +53,12 @@ class CatController extends Zend_Controller_Action
 				$mapper = new Application_Model_CatMapper();
 				$data = $mapper->find( $id, $cat);
 				$form->populate($data);
+
+				// add to registry
+				$nc = new Zend_Session_Namespace('cat');
+				$nc->id = $id;
 			}
 		}
-
     }
 
     public function addAction()
@@ -61,14 +74,17 @@ class CatController extends Zend_Controller_Action
 				$cat = new Application_Model_Cat($formData);
 				$mapper  = new Application_Model_CatMapper();
 				$mapper->save($cat);
+				
+				// add to registry
+				$nc = new Zend_Session_Namespace('cat');
+				$nc->id = $formData['id'];
+
 				$this->_helper->redirector('index');
 			} else {
 				$form->populate($formData);
 			}
 		}
 	}
-
-
 }
 
 

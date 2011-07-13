@@ -68,37 +68,37 @@ class Application_Model_CcItem
         return $this->_nickname;
     }
 
-    public function setPassword($password)
+    public function setOwnerid($ownerid)
     {
-        $this->_password = (string)$password;
+        $this->_ownerid = (int)$ownerid;
         return $this;
     }
 
-    public function getPassword()
+    public function getOwnerid()
     {
-        return $this->_password;
+        return $this->_ownerid;
     }
 
-    public function setFirstname($firstname)
+    public function setCompletiondate($completiondate)
     {
-        $this->_firstname = (string)$firstname;
+        $this->_completiondate = (string)$completiondate;
         return $this;
     }
 
-    public function getFirstname()
+    public function getCompletiondate()
     {
-        return $this->_firstname;
+        return $this->_completiondate;
     }
 
-    public function setLastname($lastname)
+    public function setDuedate($duedate)
     {
-        $this->_lastname = (string)$lastname;
+        $this->_duedate = (string)$duedate;
         return $this;
     }
 
-    public function getLastname()
+    public function getDuedate()
     {
-        return $this->_lastname;
+        return $this->_duedate;
     }
 
     public function setEmail($email)
@@ -111,5 +111,16 @@ class Application_Model_CcItem
     {
         return $this->_email;
 	}
+   public function setDescription($description)
+    {
+        $this->_description = (string)$description;
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->_description;
+    }
+
 }
 

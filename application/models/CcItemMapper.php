@@ -30,7 +30,7 @@ class Application_Model_CcItemMapper
 			'id' => $ccitem->getId(),
 			'ncid' =>$ccitem->getNcid(),
 			'description' => $ccitem->getDescription(),
-			'ownerid' =>$ccitem->getOwnerid(),
+			'owner_id' =>$ccitem->getOwnerid(),
 			'duedate' =>$ccitem->getDuedate(),
             'completiondate'   => $ccitem->getCompletiondate(),
         );
@@ -55,7 +55,7 @@ class Application_Model_CcItemMapper
         $ccitem->setId($row->id)
                   ->setNcid($row->ncid)
                   ->setDescription($row->description )
-                  ->setOwnerid($row->ownerid )
+                  ->setOwnerid($row->owner_id )
                   ->setDuedate($row->duedate )
                   ->setCompletiondate($row->completiondate);
 		return $row->toArray();
@@ -70,7 +70,7 @@ class Application_Model_CcItemMapper
             $entry->setId($row->id)
 					->setNcid( $row->ncid)
 					->setDescription( $row->description)
-					->setOwnerid( $row->ownerid)
+					->setOwnerid( $row->owner_id)
 					->setDuedate( $row->duedate)
 					->setCompletiondate($row->completiondate);
             $entries[] = $entry;

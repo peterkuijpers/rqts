@@ -1,13 +1,40 @@
 <?php $this->placeholder('sidebar')->captureStart() ?>
 <h4>Non Compliance admin</h4>
+<div style="font-weight:bold">Non Compliance</div>
 <ul>
 	<li>
-		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'index')) ?>" >List</a>
+		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action'=>'index' ), null, true) ?>" >NC - List</a>
 	</li>
 	<li>
-		<br />
 	</li>
 	<li>
-	<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add')) ?>" >New Non compliance</a>	</li>
+	<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add'), null, true) ?>" >New Non compliance</a>
+	</li>
+	<li>
+	<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'index'), null, true) ?>" >Accept Non compliance</a>
+	</li>
+	<li>
+</ul>
+<div  style="font-weight:bold">Correct& Contain</div>
+<ul>
+	<li>
+	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem'), null, true) ?>" >C&C -List</a>
+	</li>
+	<br />
+	<li>
+
+	<?php 
+	$value = new Zend_Session_Namespace('cat');
+	if ( isset ($value->id)) {
+			//Zend_Session::namespaceIsset('cat') ) {
+//		$value = new Zend_Session_Namespace( 'cat' );
+		echo "Cat id ".$value->id;
+	} else
+		echo "not registered";
+
+	 
+	?>
+	 
+	</li>
 </ul>
 <?php $this->placeholder('sidebar')->captureEnd() ?>

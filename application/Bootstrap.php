@@ -38,5 +38,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
              ->setPostfix("</div>\n</div>");
     }
 
+	protected function _initNamespace()
+	{
+		Zend_Session::start();
+//		$nc = new Zend_Session_Namespace('cat');
+	}
+
 }
 
