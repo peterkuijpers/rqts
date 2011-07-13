@@ -3,9 +3,16 @@
 class UserController extends Zend_Controller_Action
 {
 
+    protected $_FORM = null;
+
     public function init()
     {
         /* Initialize action controller here */
+    }
+
+    public function preDispatch()
+    {
+		$this->view->render('user/_sidebar.phtml');
     }
 
     public function indexAction()
@@ -15,38 +22,71 @@ class UserController extends Zend_Controller_Action
 		$this->view->entries = $user->fetchAll();
     }
 
-    public function getAction()
-    {
-        // action body
-    }
-
-    public function putAction()
-    {
-        // action body
-    }
-
-    public function postAction()
-    {
-        // action body
-    }
-
     public function deleteAction()
     {
         // action body
+
+		$id = $this->_getParam('id', 0);
+		if ($id > 0) {
+			$mapper  = new Application_Model_UserMapper();
+			$mapper->delete($id);
+		}	
+		$this->_helper->redirector( 'index' ); // back to login page
     }
 
-	public function preDispatch()
-	{
-		$this->view->render('user/_sidebar.phtml');
+    public function addAction()
+    {
+        // action body
+		$form = new Application_Form_User();
+
+		$form->submit->setLabel('Add');
+		$this->view->form = $form;
+		if ($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			if ($form->isValid($formData)) {
+				unset( $formData['id'] );
+				$user = new Application_Model_User($formData);
+				$user->setPassword( md5( $formData['password']));
+				$mapper  = new Application_Model_UserMapper();
+				$mapper->save($user);
+				$this->_helper->redirector('index');
+			} else {
+				$form->populate($formData);
+			}
+		
+		}
 	}
 
+    public function updateAction()
+    {
+        // action body
+		   // action body
+		$form = new Application_Form_User();
+		$form->submit->setLabel('Save');
+		$this->view->form = $form;
+		if ($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+			if ($form->isValid($formData)) {
+
+				$user = new Application_Model_User($formData);
+				$user->setPassword(md5($formData['password']));
+				$mapper  = new Application_Model_UserMapper();
+				Zend_Debug::dump( $user);
+				$mapper->save($user);
+				$this->_helper->redirector('index');
+			} else {
+				$form->populate($formData);
+			}
+		} else {
+			$id = $this->_getParam('id', 0);
+			if ($id > 0) {
+				$user = new Application_Model_User();
+				$mapper = new Application_Model_UserMapper();
+				$data = $mapper->find( $id, $user);
+				$form->populate($data);
+			}
+		}
+    }
+
 }
-
-
-
-
-
-
-
-
 

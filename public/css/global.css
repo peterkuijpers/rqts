@@ -112,7 +112,7 @@ body {
 	font-size:10px;
 }
 #left_menu {
-	background-color: #6699CC;
+	background-color:#92b0ff;
 	vertical-align:top;
 	padding-left: 10px;
 	padding-top: 10px;
@@ -141,7 +141,7 @@ body {
 }
 
 #footer {
-	background-color:#6699CC;
+	background-color:#92b0ff;
 	text-align: center;
 	padding: 2px 0px 2px 0px;
 }
@@ -185,4 +185,27 @@ table th {
 	margin-top: 10px;
 	margin-bottom: 5px;
 	padding: 0px 0px 0px 0px;
+}
+.list_table {
+	border-color: black;
+	border-width: 1px;
+	border-style:solid;
+	padding: 2px 7px 2px 7px;
+
+}
+.list_table th {
+	background-color: #92b0ff;
+	color: white;
+	border-color: black;
+	border-width: 1px;
+	border-style:solid;
+	padding: 2px 7px 2px 7px;
+}
+.list_table td {
+	background-color: white;
+
+	border-color: black;
+	border-width: 1px;
+	border-style:solid;
+	padding: 2px 7px 2px 7px;
 }

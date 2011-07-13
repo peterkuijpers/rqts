@@ -14,7 +14,7 @@ class Application_Form_Login extends Zend_Form
                 array('StringLength', false, array(0, 50)),
             ),
             'required'   => true,
-            'label'      => 'Username:',
+            'label'      => 'Username',
         ));
 
         $this->addElement('password', 'password', array(
@@ -23,7 +23,7 @@ class Application_Form_Login extends Zend_Form
                 array('StringLength', false, array(0, 50)),
             ),
             'required'   => true,
-            'label'      => 'Password:',
+            'label'      => 'Password',
         ));
 
         $this->addElement('submit', 'login', array(

@@ -13,6 +13,15 @@ class AuthController extends Zend_Controller_Action
         // action body
 		$form = new Application_Form_Login();
 		$this->view->form = $form;
+		$request = $this->getRequest();
+		$form = new Application_Form_Login();
+		if ($form->isValid($request->getPost())) {
+			if ($this->_process($form->getValues())) {
+				$this->_helper->redirector( 'index','index' );
+			} else {
+
+			}
+		}
     }
 
     public function getAction()
@@ -20,23 +29,14 @@ class AuthController extends Zend_Controller_Action
 		// action body
     }
 
-    public function postAction()
+
+    public function logoutAction()
     {
         // action body
-		  // action body
-		$request = $this->getRequest();
-		$form = new Application_Form_Login();
-		if ($form->isValid($request->getPost())) {
-			if ($this->_process($form->getValues())) {
-				echo 'logged-in';
-				$this->_helper->redirector( 'index','index' );
-			} else {
-				echo 'failed';
-			}
-
-		}
-		$this->view->form = $form;
+		Zend_Auth::getInstance()->clearIdentity();
+        $this->_helper->redirector('index', 'index'); // back to login page
     }
+   
 
     protected function _process($values)
     {
@@ -65,16 +65,7 @@ class AuthController extends Zend_Controller_Action
             ->setIdentityColumn('nickname')
             ->setCredentialColumn('password')
             ->setCredentialTreatment( 'md5( ? )');
-//            ->setCredentialTreatment('SHA1(CONCAT(?,password_salt))');
-
         return $authAdapter;
-    }
-
-    public function logoutAction()
-    {
-        // action body
-		Zend_Auth::getInstance()->clearIdentity();
-        $this->_helper->redirector('index', 'index'); // back to login page
     }
 
 

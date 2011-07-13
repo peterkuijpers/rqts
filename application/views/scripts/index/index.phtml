@@ -1,8 +1,13 @@
 <div id="page_title"> Welcome </div>
 <hr />
-<p><a href="<?php echo $this->url(
-    array(
-        'controller' => 'cats',
-    ),
-    'default',
-    true) ?>">Cats</a></p>
+<?php
+     $auth = Zend_Auth::getInstance();
+     if ($auth->hasIdentity()) {
+?>
+		
+			<p><a href="<?php echo $this->url( array( 'controller' => 'cats', ), 'default',  true) ?>">Cats</a></p>
+<?php } else {
+		echo "Please login";
+
+}
+?>

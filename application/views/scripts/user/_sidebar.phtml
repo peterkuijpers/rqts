@@ -1,9 +1,13 @@
 <?php $this->placeholder('sidebar')->captureStart() ?>
 <h4>User Administration</h4>
 <ul>
-    <li><a href="<?php $this->url(array('action' => 'list')) ?>">
-        List</a></li>
-    <li><a href="<?php $this->url(array('action' => 'create')) ?>">
-        Create</a></li>
+	<li>
+		<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'index')) ?>" >List</a>
+	</li>
+	<li>
+		<br />
+	</li>
+	<li>
+	<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'add')) ?>" >New user</a>	</li>
 </ul>
 <?php $this->placeholder('sidebar')->captureEnd() ?>

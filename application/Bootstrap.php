@@ -16,14 +16,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view = $this->getResource('view');
         $view->doctype('XHTML1_STRICT');
 	}
-
+/*
 	protected function _initRestRouter()
 	{
 		$front  = Zend_Controller_Front::getInstance();
 		$restRoute = new Zend_Rest_Route($front);
 		$front->getRouter()->addRoute('default', $restRoute);
 	}
-
+*/
 	protected function _initSidebar()
     {
         $this->bootstrap('View');
@@ -35,7 +35,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
              // "separator" -> markup to emit between items in a collection
              ->setSeparator("</div>\n    <div class=\"block\">\n")
              // "postfix" -> markup to emit once after all items in a collection
-             ->setPostfix("</div>\n end</div>");
+             ->setPostfix("</div>\n</div>");
     }
 
 }

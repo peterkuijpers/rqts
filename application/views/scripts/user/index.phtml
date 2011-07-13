@@ -1,16 +1,30 @@
-<p><a href="<?php echo $this->url(
-    array(
-        'controller' => '',
-        'action'     => 'index'
-    ),
-    'default',
-    true) ?>">Sign Our Guestbook</a></p>
 
-User Entries: <br />
-<dl>
-    <?php foreach ($this->entries as $entry): ?>
-    <dt><?php echo $this->escape($entry->nickname) ?></dt>
-    <dd><?php echo $this->escape($entry->firstname) ?></dd>
-    <dd><?php echo $this->escape($entry->lastname) ?></dd>
-    <?php endforeach ?>
-</dl>
+<?php
+//	echo $this->form->setAction($this->url());
+?>
+<div id="page_title">Users</div>
+<hr />
+<table class="list_table">
+	<tr>
+		<th class="list_table">Nickname</th>
+		<th class="list_table">First name</th>
+		<th class="list_table">Last name</th>
+		<th class="list_table">Email</th>
+	</tr>
+	<?php foreach( $this->entries as $entry ) { ?>
+	<tr>
+		<td > <?php echo $this->escape( $entry->nickname ) ?> </td>
+		<td > <?php echo $this->escape( $entry->firstname ) ?> </td>
+		<td > <?php echo $this->escape( $entry->lastname ) ?> </td>
+		<td > <?php echo $this->escape( $entry->email ) ?> </td>
+		<td style="padding: 2px 10px 0px 10px">
+		<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
+		</td>
+		<td style="padding: 2px 10px 0px 10px">
+		<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'delete', 'id' => $entry->id )) ?>"
+		   onClick="return confirm('Are you sure you want to delete the user <?php echo $entry->firstname. " ".$entry->lastname; ?>?')">delete</a>
+		</td>
+	</tr>
+	<?php } ?>
+</table>
+<br />

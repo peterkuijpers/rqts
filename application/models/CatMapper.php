@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_UserMapper
+class Application_Model_CatMapper
 {
 	protected $_dbTable;
 
@@ -34,7 +34,7 @@ class Application_Model_UserMapper
             'email'   => $user->getEmail(),
 			'id' => $user->getId(),
         );
-		//tweeked here 
+		//tweeked here
 		$id = $user->getId();
         if (null ===  $id ) {
             unset($data['id']);
@@ -84,5 +84,6 @@ class Application_Model_UserMapper
 //		$where = $this->getDbTable()->getAdapter()->quoteInto('bug_id = ?', $id);
         $this->getDbTable()->delete( 'id = '.$id );
 	}
+
 }
 

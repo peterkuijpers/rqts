@@ -19,6 +19,11 @@
 					</li>
 					<li>|</li>
 					<li><a href="">Cats</a></li>
+					<li>|</li>
+					<li><a href="<?php echo $this->url(
+							array( 'controller' => 'user', ),
+							'default', true) ?>">User admin</a>
+					</li>
 				</ul>
 				<ul style="float:right">
 					<li><?php echo $this->loggedInAs(); ?> </li>
