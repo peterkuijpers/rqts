@@ -27,17 +27,17 @@ class Application_Model_CatMapper
     public function save(Application_Model_Cat $cat)
     {
         $data = array(
-			'id' => $user->getId(),
-			'initiatorid' =>$user->getInitiatorid(),
-			'initdate' =>$user->getInitdate(),
-			'focalid' => $user->getFocalid(),
-			'qaid' =>$user->getQaid(),
-			'statusid' =>$user->getStatusid(),
-			'summary' =>$user->getSummary(),
-            'details'   => $user->getDetails(),
+			'id' => $cat->getId(),
+			'initiatorid' =>$cat->getInitiatorid(),
+			'initdate' => $cat->getInitdate(),
+			'focalid' => $cat->getFocalid(),
+			'qaid' =>$cat->getQaid(),
+			'statusid' =>$cat->getStatusid(),
+			'summary' =>$cat->getSummary(),
+            'details'   => $cat->getDetails(),
 			
         );
-		$id = $user->getId();
+		$id = $cat->getId();
         if (null ===  $id ) {
             unset($data['id']);
             $this->getDbTable()->insert($data);
@@ -47,14 +47,14 @@ class Application_Model_CatMapper
         }
     }
 
-    public function find($id, Application_Model_User $user)
+    public function find($id, Application_Model_Cat $cat)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
             return;
         }
         $row = $result->current();
-        $user->setId($row->id)
+        $cat->setId($row->id)
                   ->setInitiatorid($row->initiatorid )
                   ->setInitdate($row->initdate )
                   ->setFocalid($row->focalid)
@@ -70,10 +70,10 @@ class Application_Model_CatMapper
         $resultSet = $this->getDbTable()->fetchAll();
         $entries   = array();
         foreach ($resultSet as $row) {
-            $entry = new Application_Model_User();
+            $entry = new Application_Model_Cat();
             $entry->setId($row->id)
-					->setInitiatorid( $row->Initiatorid)
-					->setInitdate( $row->Initdate)
+					->setInitiatorid( $row->initiatorid)
+					->setInitdate( $row->initdate)
 					->setFocalid( $row->focalid)
 					->setQaid( $row->qaid)
 					->setStatusid( $row->statusid)

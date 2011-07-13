@@ -60,7 +60,6 @@ class UserController extends Zend_Controller_Action
     public function updateAction()
     {
         // action body
-		   // action body
 		$form = new Application_Form_User();
 		$form->submit->setLabel('Save');
 		$this->view->form = $form;

@@ -29,22 +29,35 @@
         </controllerFile>
         <controllerFile controllerName="Cat">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="update"/>
+          <actionMethod actionName="add"/>
+        </controllerFile>
+        <controllerFile controllerName="Settings">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="CcItem">
+          <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Login"/>
         <formFile formName="User"/>
+        <formFile formName="Cat"/>
+        <formFile formName="Settings"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>
         <dbTableDirectory>
           <dbTableFile dbTableName="User"/>
           <dbTableFile dbTableName="Cat"/>
+          <dbTableFile dbTableName="CcItem"/>
         </dbTableDirectory>
         <modelFile modelName="UserMapper"/>
         <modelFile modelName="User"/>
         <modelFile modelName="CatMapper"/>
         <modelFile modelName="Cat"/>
+        <modelFile modelName="CcItemMapper"/>
+        <modelFile modelName="CcItem"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -91,6 +104,18 @@
           <viewControllerScriptsDirectory forControllerName="Cat">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Cat">
+            <viewScriptFile forActionName="update"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Cat">
+            <viewScriptFile forActionName="add"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Settings">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="CcItem">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -128,6 +153,8 @@
           <testApplicationControllerFile filesystemName="UserControllerTest.php"/>
           <testApplicationControllerFile filesystemName="AuthControllerTest.php"/>
           <testApplicationControllerFile filesystemName="CatControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="SettingsControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="CcItemControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

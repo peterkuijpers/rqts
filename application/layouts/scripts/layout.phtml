@@ -18,20 +18,29 @@
 							'default', true) ?>">Home</a>
 					</li>
 					<li>|</li>
-					<li><a href="">Cats</a></li>
+					<li><a href="<?php echo $this->url(
+							array( 'controller' => 'cat', ),
+							'default', true) ?>">Cats</a>
+					</li>
 					<li>|</li>
 					<li><a href="<?php echo $this->url(
 							array( 'controller' => 'user', ),
 							'default', true) ?>">User admin</a>
+					</li>
+					<li>|</li>
+					<li><a href="<?php echo $this->url(
+							array( 'controller' => 'settings', ),
+							'default', true) ?>">Settings</a>
 					</li>
 				</ul>
 				<ul style="float:right">
 					<li><?php echo $this->loggedInAs(); ?> </li>
 				</ul>
 			</td>
+		</tr>
 		<tr id="header">
 			<td colspan="2">
-				<div id="main_logo">RQTS</p></div>
+				<div id="main_logo">RQTS</div>
 			</td>
 		</tr>
 		<tr id="top_menu" >
@@ -39,7 +48,7 @@
 			<td></td>
 		</tr>
 	</table></td></tr>
-	`<tr><td><table width="100%">
+	<tr><td><table width="100%">
 		<tr>
 			<td id="left_menu" width="150px">
 				<?php echo $this->placeholder('sidebar') ?>
