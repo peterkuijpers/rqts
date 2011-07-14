@@ -22,7 +22,7 @@ class Application_Model_Cat
     {
         $method = 'set' . $name;
         if (('mapper' == $name) || !method_exists($this, $method)) {
-            throw new Exception('Invalid user property');
+            throw new Exception('Invalid cat property');
         }
         $this->$method($value);
     }
@@ -31,7 +31,7 @@ class Application_Model_Cat
     {
         $method = 'get' . $name;
         if (('mapper' == $name) || !method_exists($this, $method)) {
-            throw new Exception('Invalid user property');
+            throw new Exception('Invalid cat property');
         }
         return $this->$method();
     }

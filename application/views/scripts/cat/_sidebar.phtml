@@ -4,8 +4,6 @@
 <?php 
 	$value = new Zend_Session_Namespace('cat');
 	if ( isset ($value->id)) {
-			//Zend_Session::namespaceIsset('cat') ) {
-//		$value = new Zend_Session_Namespace( 'cat' );
 		echo "Select NC id ".$value->id;
 	} else
 		echo "No NC selected";

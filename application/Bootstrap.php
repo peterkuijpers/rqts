@@ -60,5 +60,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 //		$nc = new Zend_Session_Namespace('cat');
 	}
 
+	protected function _initStatuscodes()
+	{
+		$values = array(
+			'1' => 'NC_Draft',
+			'2' => 'NC_Submitted',
+			'3' => 'NC_Approved'
+		);
+		Zend_Registry::set( 'status', $values );
+	}
+
 }
 

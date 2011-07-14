@@ -17,11 +17,9 @@ class Application_Form_Cat extends Zend_Form
             'label'      => 'Id',
         ));
 
-        $this->addElement('text', 'statusid', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array( 'Int' ),
-            'required'   => true,
-            'label'      => 'Status',
+        $this->addElement('select', 'statusid', array(
+            'required'  => true,
+            'label'     => 'Status',
         ));
 
 		$this->addElement('select', 'initiatorid', array(
@@ -59,11 +57,6 @@ class Application_Form_Cat extends Zend_Form
 			'rows'	   => '3',
         ));
 
-        $this->addElement('submit', 'submit', array(
-            'required' => false,
-            'ignore'   => true,
-            'label'    => 'Submit',
-        ));
 
     }
 }

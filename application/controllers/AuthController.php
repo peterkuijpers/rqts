@@ -35,6 +35,10 @@ class AuthController extends Zend_Controller_Action
         // action body
 		Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->redirector('index', 'index'); // back to login page
+		//
+		//unregister cat
+		$nc = new Zend_Session_Namespace('cat');
+		unset( $nc->id);
     }
    
 
@@ -67,8 +71,6 @@ class AuthController extends Zend_Controller_Action
             ->setCredentialTreatment( 'md5( ? )');
         return $authAdapter;
     }
-
-
 }
 
 

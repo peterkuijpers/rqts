@@ -101,9 +101,14 @@ class Application_Model_UserMapper
 	}
 	public function delete( $id )
 	{
-		Zend_Debug::dump( $id );
 //		$where = $this->getDbTable()->getAdapter()->quoteInto('bug_id = ?', $id);
         $this->getDbTable()->delete( 'id = '.$id );
+	}
+	public function getIdForNickname( $nickname )
+	{
+		$str = 'nickname = "'.$nickname.'"';
+        $row = $this->getDbTable()->fetchRow($str);
+     	return $row->id;
 	}
 }
 

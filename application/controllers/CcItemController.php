@@ -10,11 +10,11 @@ class CcItemController extends Zend_Controller_Action
 
 	public function preDispatch()
 	{
-		$this->view->render('ccitem/_topmenu.phtml');
 	}
 
 	public function postDispatch()
     {
+		$this->view->render('cat/_topmenu.phtml');
 		$this->view->render('ccitem/_sidebar.phtml');
     }
     public function indexAction()

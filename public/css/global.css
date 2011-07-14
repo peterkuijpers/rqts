@@ -28,7 +28,6 @@ body {
 #first_line {
 	background-color: black;
 	color:white;
-	font-weight:bold;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 }
@@ -43,7 +42,7 @@ body {
 		text-decoration: none;
 		background-color: black;
 	color:white;
-	font-weight: bold;
+/*	font-weight: bold;  */
 	margin: 0px 0px 0px 0px;
 	padding-left: 0px;
 	padding-right: 0px;
