@@ -43,16 +43,17 @@
 				<div id="main_logo">RQTS</div>
 			</td>
 		</tr>
-		<tr id="top_menu" >
-			<td width="200px"></td>
-			<td></td>
-		</tr>
 	</table></td></tr>
 	<tr><td><table width="100%">
 		<tr>
-			<td id="left_menu" width="150px">
+			<td id="left_menu" width="150px" rowspan="2">
 				<?php echo $this->placeholder('sidebar') ?>
 			</td>
+			<td id="top_menu">
+				<?php echo $this->placeholder('topmenu') ?>
+			</td>
+		</tr>
+		<tr>
 			<td id="content">
 			<?php echo $this->layout()->content ?>
 			</td>

@@ -7,6 +7,7 @@ class Application_Model_User
 	protected $_password;
 	protected $_firstname;
 	protected $_lastname;
+	protected $_shortname;
 	protected $_email;
 
   public function __construct(array $options = null)
@@ -110,5 +111,15 @@ class Application_Model_User
     public function getEmail()
     {
         return $this->_email;
+	}
+
+	public function setShortname( $shortname)
+	{
+		$this->_shortname = (string)$shortname;
+		return $this;
+	}
+	public function getShortname( )
+	{
+		return $this->_shortname;
 	}
 }

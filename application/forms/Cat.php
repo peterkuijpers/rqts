@@ -24,11 +24,7 @@ class Application_Form_Cat extends Zend_Form
             'label'      => 'Status',
         ));
 
-		$this->addElement('text', 'initiatorid', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('StringLength', false, array(0, 10)),
-            ),
+		$this->addElement('select', 'initiatorid', array(
             'required'   => true,
             'label'      => 'Raised by',
         ));
@@ -36,17 +32,11 @@ class Application_Form_Cat extends Zend_Form
             'filters'    => array('StringTrim'),
             'validators' => array( 'date'),
             'required'   => true,
+			'size'		=> 10,
             'label'      => 'Date raised',
         ));
 
-        $this->addElement('text', 'focalid', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array( 'Int' ),
-            'required'   => false,
-            'label'      => 'Assigned to',
-        ));
-
-        $this->addElement('text', 'focalid', array(
+        $this->addElement('select', 'focalid', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'Int' ),
             'required'   => false,

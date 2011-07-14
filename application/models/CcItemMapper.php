@@ -23,7 +23,12 @@ class Application_Model_CcItemMapper
         }
         return $this->_dbTable;
     }
-
+	/**
+	 * Save an CcItem
+	 * If id = null then insert new item in  db
+	 * If id = value then update item in db
+	 * @param Application_Model_CcItem $ccitem
+	 */
     public function save(Application_Model_CcItem $ccitem)
     {
         $data = array(
@@ -44,7 +49,13 @@ class Application_Model_CcItemMapper
             $this->getDbTable()->update($data, array('id = ?' => $id));
         }
     }
-
+	/**
+	 * Find a single item in the db identified by $id
+	 * Updates $ccitem parameter and returns array of field-values
+	 * @param <type> $id
+	 * @param Application_Model_CcItem $ccitem
+	 * @return <type>
+	 */
     public function find($id, Application_Model_CcItem $ccitem)
     {
         $result = $this->getDbTable()->find($id);
@@ -60,7 +71,10 @@ class Application_Model_CcItemMapper
                   ->setCompletiondate($row->completiondate);
 		return $row->toArray();
     }
-
+	/**
+	 * Fetching all CcItems
+	 * @return Application_Model_CcItem
+	 */
     public function fetchAll()
     {
         $resultSet = $this->getDbTable()->fetchAll();
@@ -77,7 +91,10 @@ class Application_Model_CcItemMapper
         }
         return $entries;
     }
-
+	/**
+	 * Delete an ccitem identified by $id
+	 * @param <type> $id
+	 */
 	public function delete( $id )
 	{
         $this->getDbTable()->delete( 'id = '.$id );

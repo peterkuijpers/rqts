@@ -52,13 +52,18 @@ class Application_Model_UserMapper
             return;
         }
         $row = $result->current();
+		$shortname = substr( $row->firstname,0,1)." ".$row->lastname;
         $user->setId($row->id)
                   ->setNickname($row->nickname)
                   ->setPassword($row->password)
                   ->setFirstname($row->firstname)
                   ->setLastname($row->lastname)
-                  ->setEmail($row->email);
-		return $row->toArray();
+                  ->setEmail($row->email)
+				  ->setShortname( $shortname);
+
+		$rowArr = $row->toArray();
+		$rowArr['shortname'] = $shortname;
+		return $rowArr;
     }
 
     public function fetchAll()
@@ -72,12 +77,28 @@ class Application_Model_UserMapper
 					->setPassword( $row->password)
 					->setFirstname( $row->firstname)
 					->setLastname( $row->lastname)
-					->setEmail($row->email);
+					->setEmail($row->email)
+					->setShortname( substr( $row->firstname,0,1)." ".$row->lastname);
             $entries[] = $entry;
         }
         return $entries;
     }
 
+	/**
+	 * Fetch a list of all users shortnames
+	 * Mainly used in pulldown menus
+	 * @return array 
+	 */
+
+	public function fetchAllShortnames()
+	{
+        $resultSet = $this->getDbTable()->fetchAll();
+        $entries   = array();
+        foreach ($resultSet as $row) {
+			$entries[ $row->id ] = substr( $row->firstname,0,1)." ".$row->lastname;
+		}
+		return $entries;
+	}
 	public function delete( $id )
 	{
 		Zend_Debug::dump( $id );

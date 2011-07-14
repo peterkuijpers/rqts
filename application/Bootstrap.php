@@ -37,6 +37,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
              // "postfix" -> markup to emit once after all items in a collection
              ->setPostfix("</div>\n</div>");
     }
+	/**
+	 * Initiate topmenu
+	 */
+	protected function _initTopmenu()
+    {
+        $this->bootstrap('View');
+        $view = $this->getResource('View');
+
+        $view->placeholder('topmenu')
+             // "prefix" -> markup to emit once before all items in collection
+             ->setPrefix("<div class=\"top_menu\">\n    <div class=\"block\">\n")
+             // "separator" -> markup to emit between items in a collection
+             ->setSeparator("</div>\n    <div class=\"block\">\n")
+             // "postfix" -> markup to emit once after all items in a collection
+             ->setPostfix("</div>\n</div>");
+    }
 
 	protected function _initNamespace()
 	{

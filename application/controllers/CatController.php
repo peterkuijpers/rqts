@@ -2,34 +2,49 @@
 
 class CatController extends Zend_Controller_Action
 {
+	public  $_filtered;
 
     public function init()
     {
     }
+
+	public function preDispatch()
+	{
+		$this->view->render('cat/_topmenu.phtml');
+	}
 
    public function postDispatch()
     {
 		$this->view->render('cat/_sidebar.phtml');
     }
 
-    public function indexAction()
+	public function indexAction()
     {
         // action body
 		$cat = new Application_Model_CatMapper();
-		$this->view->entries = $cat->fetchAll();
-
+		$ncs = $cat->fetchAll();
+		$this->view->entries = $ncs;
+/*
 		//unregister cat
 		$nc = new Zend_Session_Namespace('cat');
 		unset( $nc->id);
+ * 
+ */
     }
 
     public function updateAction()
     {
         // action body
 
-
 		$form = new Application_Form_Cat();
 //		$form->submit->setLabel('Save');
+
+//		$allShortNames = array();
+		$userMapper = new Application_Model_UserMapper();
+		$allShortNames = $userMapper->fetchAllShortnames();
+		$form->initiatorid->setMultiOptions($allShortNames);
+		$form->focalid->setMultiOptions($allShortNames);
+
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
@@ -67,6 +82,13 @@ class CatController extends Zend_Controller_Action
 		// action body
 		$form = new Application_Form_Cat();
 //		$form->submit->setLabel('Save');
+		$userMapper = new Application_Model_UserMapper();
+		$allShortnames = $userMapper->fetchAllShortnames();
+		$form->initiatorid->setMultiOptions( $allShortnames);
+		$form->focalid->setMultiOptions( $allShortnames);
+
+		$form->initdate->setValue( date('Y-m-d') );
+
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();

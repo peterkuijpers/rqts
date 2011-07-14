@@ -42,7 +42,7 @@ class AuthController extends Zend_Controller_Action
     {
         // Get our authentication adapter and check credentials
         $adapter = $this->_getAuthAdapter();
-        $adapter->setIdentity($values['username']);
+        $adapter->setIdentity($values['nickname']);
         $adapter->setCredential($values['password']);
 
         $auth = Zend_Auth::getInstance();

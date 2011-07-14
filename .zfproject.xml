@@ -44,6 +44,7 @@
         <formFile formName="User"/>
         <formFile formName="Cat"/>
         <formFile formName="Settings"/>
+        <formFile formName="Filter"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>

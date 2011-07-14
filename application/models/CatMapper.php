@@ -84,6 +84,7 @@ class Application_Model_CatMapper
         return $entries;
     }
 
+
 	public function delete( $id )
 	{
 		Zend_Debug::dump( $id );
