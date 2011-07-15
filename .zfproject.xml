@@ -37,6 +37,9 @@
         </controllerFile>
         <controllerFile controllerName="CcItem">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="new"/>
+          <actionMethod actionName="update"/>
+          <actionMethod actionName="delete"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -45,6 +48,7 @@
         <formFile formName="Cat"/>
         <formFile formName="Settings"/>
         <formFile formName="Filter"/>
+        <formFile formName="CcItem"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>
@@ -116,6 +120,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="CcItem">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="CcItem">
+            <viewScriptFile forActionName="new"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="CcItem">
+            <viewScriptFile forActionName="update"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="CcItem">
+            <viewScriptFile forActionName="delete"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

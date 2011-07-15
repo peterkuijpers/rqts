@@ -34,16 +34,16 @@ class Application_Model_CcItemMapper
         $data = array(
 			'id' => $ccitem->getId(),
 			'ncid' =>$ccitem->getNcid(),
-			'description' => $ccitem->getDescription(),
-			'owner_id' =>$ccitem->getOwnerid(),
-			'duedate' =>$ccitem->getDuedate(),
-            'completiondate'   => $ccitem->getCompletiondate(),
+			'description'	=> $ccitem->getDescription(),
+			'owner_id'		=> $ccitem->getOwnerid(),
+			'duedate'		=> $ccitem->getDuedate(),
+            'completiondate'=> $ccitem->getCompletiondate(),
         );
-		//tweeked here
 		$id = $ccitem->getId();
+		Zend_Debug::dump( $id);
         if (null ===  $id ) {
             unset($data['id']);
-            $this->getDbTable()->insert($data);
+			$this->getDbTable()->insert($data);
         } else {
 			echo 'update';
             $this->getDbTable()->update($data, array('id = ?' => $id));
@@ -116,9 +116,9 @@ class Application_Model_CcItemMapper
         }
         $row = $result->current();
 
-		$rowset = $row->findDependentRowset( 'CcItem');
-		     $entries   = array();
-        foreach ($resultSet as $row) {
+		$rowset = $row->findDependentRowset( 'Application_Model_DbTable_CcItem' );
+		$entries   = array();
+        foreach ($rowset as $row) {
             $entry = new Application_Model_CcItem();
             $entry->setId($row->id)
 					->setNcid( $row->ncid)

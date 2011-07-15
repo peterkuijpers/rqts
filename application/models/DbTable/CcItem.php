@@ -7,12 +7,12 @@ class Application_Model_DbTable_CcItem extends Zend_Db_Table_Abstract
 	protected $_referenceMap    = array(
         'Owner' => array(
             'columns'           => 'ownerid',
-            'refTableClass'     => 'User',
+            'refTableClass'     => 'Application_Model_DbTable_User',
             'refColumns'        => 'id'
         ),
         'Nc' => array(
             'columns'           => 'ncid',
-            'refTableClass'     => 'Cat',
+            'refTableClass'     => 'Application_Model_DbTable_Cat',
             'refColumns'        => 'id'
         )
     );

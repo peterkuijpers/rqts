@@ -4,21 +4,21 @@ class Application_Model_DbTable_Cat extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'nc';
-	protected $_dependentTables = array( 'CcItem' );
+	protected $_dependentTables = array( 'Application_Model_DbTable_CcItem' );
 	protected $_referenceMap    = array(
         'Initiator' => array(
             'columns'           => 'initiatorid',
-            'refTableClass'     => 'User',
+            'refTableClass'     => 'Application_Model_DbTable_User',
             'refColumns'        => 'id'
         ),
         'Focal' => array(
             'columns'           => 'focalid',
-            'refTableClass'     => 'User',
+            'refTableClass'     => 'Application_Model_DbTable_User',
             'refColumns'        => 'id'
         ),
         'Qa' => array(
             'columns'           => 'qaid',
-            'refTableClass'     => 'User',
+            'refTableClass'     => 'Application_Model_DbTable_User',
             'refColumns'        => 'id'
         )
     );

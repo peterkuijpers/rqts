@@ -1,7 +1,7 @@
 <?php
 //	echo $this->form->setAction($this->url());
 ?>
-<div id="page_title">List</div>
+<div id="page_title">NonCompliance List</div>
 <hr />
 		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add', )) ?>">New NC</a>
 		<br /><br />
@@ -40,7 +40,7 @@
 			?>
 		</td>
 		<td style="padding: 2px 10px 0px 10px">
-		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
+		<a href="<?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
 		</td>
 	</tr>
 	<?php } ?>

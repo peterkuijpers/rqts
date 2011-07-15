@@ -3,8 +3,11 @@
 
 <?php 
 	$cat = new Zend_Session_Namespace('cat');
-	if ( isset ($cat->id)) {
-		echo "Selected NonCompl id:<br /> ".$cat->id;
+	$nc = $this->getCurrentNc();
+	if ( isset ($nc)) {
+		echo "Selected NonCompliance<br />";
+		echo "id: ".$nc->getId()."<br/>";
+		echo "summary: <br/>".$nc->getSummary();
 	} else
 		echo "No NonCompl selected";
 	echo "<br /><br />";

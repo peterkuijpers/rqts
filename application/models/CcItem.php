@@ -63,10 +63,10 @@ class Application_Model_CcItem
         return $this;
     }
 
-    public function getNickname()
-    {
-        return $this->_nickname;
-    }
+	public function getNcid( )
+	{
+		return $this->_ncid;
+	}
 
     public function setOwnerid($ownerid)
     {
@@ -101,17 +101,7 @@ class Application_Model_CcItem
         return $this->_duedate;
     }
 
-    public function setEmail($email)
-    {
-        $this->_email = (string)$email;
-        return $this;
-    }
-
-    public function getEmail()
-    {
-        return $this->_email;
-	}
-   public function setDescription($description)
+	public function setDescription($description)
     {
         $this->_description = (string)$description;
         return $this;
