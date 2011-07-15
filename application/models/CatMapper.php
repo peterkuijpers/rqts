@@ -84,10 +84,13 @@ class Application_Model_CatMapper
         return $entries;
     }
 
+	public function approve( $id )
+	{
+		$this->getDbTable()->update( array('statusid' => 3), array('id = ?' => $id) );
+	}
 
 	public function delete( $id )
 	{
-		Zend_Debug::dump( $id );
         $this->getDbTable()->delete( 'id = '.$id );
 	}
 

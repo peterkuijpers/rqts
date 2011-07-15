@@ -82,7 +82,8 @@ body {
 }
 #top_menu ul {
 	list-style-type: none;
-	margin-bottom:0px;
+	margin-top: 2px;
+	margin-bottom:2px;
 }
 #top_menu ul li {
 	float: left;
@@ -90,15 +91,15 @@ body {
 #top_menu li a:hover {
 	background-color: white;
 	color: black;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 #top_menu a:link {
 	background-color: #4343a4;
 	color:white;
 	text-decoration:none;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 #top_menu a:visited {
 	background-color: #4343a4;

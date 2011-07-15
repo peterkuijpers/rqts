@@ -34,8 +34,9 @@
 			?>
 		</td>
 		<td> <?php
-			$userMapper->find( $entry->focalid, $user );
-			echo $this->escape( $user->getShortname() );
+			// assigned to can be empty
+			if ($userMapper->find( $entry->focalid, $user ) )
+				echo $this->escape( $user->getShortname() );
 			?>
 		</td>
 		<td style="padding: 2px 10px 0px 10px">

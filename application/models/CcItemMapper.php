@@ -100,6 +100,35 @@ class Application_Model_CcItemMapper
         $this->getDbTable()->delete( 'id = '.$id );
 	}
 
+	/**
+	 * Fetch all items that belong to the nc indentified by ncid
+	 * @param <type> $ncid 
+	 * @return <type> array of CcItems
+	 */
+	public function fetchAllItemsForNc( $ncid )
+	{
+		// first get cat/nc
+		$cat = new Application_Model_Cat( );
+		$catMapper = new Application_Model_CatMapper();
+		$result = $catMapper->getDbTable()->find($ncid);
+        if (0 == count($result)) {
+            return;
+        }
+        $row = $result->current();
 
+		$rowset = $row->findDependentRowset( 'CcItem');
+		     $entries   = array();
+        foreach ($resultSet as $row) {
+            $entry = new Application_Model_CcItem();
+            $entry->setId($row->id)
+					->setNcid( $row->ncid)
+					->setDescription( $row->description)
+					->setOwnerid( $row->owner_id)
+					->setDuedate( $row->duedate)
+					->setCompletiondate($row->completiondate);
+            $entries[] = $entry;
+        }
+        return $entries;
+	}
 }
 

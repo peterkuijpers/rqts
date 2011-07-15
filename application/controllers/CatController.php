@@ -40,26 +40,47 @@ class CatController extends Zend_Controller_Action
         // action body
 		$form = new Application_Form_Cat();
 		$this->setGeneralFormParams($form);
-
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
+			// check if it is 'approval'
+			if ( isset($formData['approve']) ) {
+				$catMapper = new Application_Model_CatMapper();
+				$catMapper->approve( $formData['id'] );
+				$this->_helper->redirector('index');
+			}
+			// check raised-by is me and status =draft
+			// get login id
+			$auth = Zend_Auth::getInstance();
+			$loginId = $auth->getIdentity()->id;
+			if ( $loginId == $formData['initiatorid'] && $formData['statusid'] == 1 ) {
+				//owner of the nc can update the nc or submit it
+				echo '>>Owner can update draft';
+				$this->setUpdateFormParams($form);
+			} else {
+				echo '>>Display only';
+				$this->setViewFormParams( $form);
+			}
+			// change from '' to null for database
+			if ($formData['focalid'] == '0') unset( $formData['focalid']);
+			//
 			if ($form->isValid($formData)) {
+				// 
 				$cat = new Application_Model_Cat($formData);
 				if ( isset( $formData['submit']))  {
-					echo 'form submitted';
 					//submit form change status to NC_Submitted
 					$cat->setStatusid( 2 );
 				}
+				// save to database
 				$mapper  = new Application_Model_CatMapper();
 				$mapper->save($cat);
 
 				// add to registry
 				$nc = new Zend_Session_Namespace('cat');
 				$nc->id = $cat->getId();
-				echo $cat->getId();
 				$this->_helper->redirector('index');
 			} else {
+				// invalid entry - resubmit form
 				$form->populate($formData);
 			}
 		} else {
@@ -75,12 +96,18 @@ class CatController extends Zend_Controller_Action
 				$loginId = $auth->getIdentity()->id;
 				if ( $loginId == $data['initiatorid'] && $data['statusid'] == 1 ) {
 					//owner of the nc can update the nc or submit it
-					echo 'Owner can update draft';
+					echo '>>Owner can update draft';
 					$this->setUpdateFormParams($form);
 				} else {
-					echo 'Display only';
+					echo '>>Display only';
 					$this->setViewFormParams( $form);
+					// check if current user is focal and nc-status = nc_submitted
+					// if this is the case then allow user to approve nc
+					if ( $loginId == $data['focalid'] &&$data['statusid'] == 2 ) {
+						$this->setApproveFormParams($form);
+					}
 				}
+ 
 				$form->populate($data);
 
 				// add to registry
@@ -102,32 +129,45 @@ class CatController extends Zend_Controller_Action
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
+			if ($formData['focalid'] == '0') unset( $formData['focalid']);
 			unset( $formData['id'] );
 			if ($form->isValid($formData)) {
 				$cat = new Application_Model_Cat($formData);
 				if ( isset( $formData['submit']))  {
 					// Submit pressed
-					//set status to NC_Submitted
-					$cat->setStatusid = 2;
-				}
-				$mapper  = new Application_Model_CatMapper();
-				$mapper->save($cat);
+					if ($this->additionalCheck( $cat ) ) {
+						//set status to NC_Submitted
+						$cat->setStatusid( 2);
+						// save to database
+						$mapper  = new Application_Model_CatMapper();
+						$mapper->save($cat);
+						// add to registry
+						$nc = new Zend_Session_Namespace('cat');
+						$nc->id = $formData['id'];
+						$this->_helper->redirector('index');
+					} else {
+						echo "some extra validation errors";
+					}
+				} else {
+					$mapper  = new Application_Model_CatMapper();
+					$mapper->save($cat);
 
-				// add to registry
-				$nc = new Zend_Session_Namespace('cat');
-				$nc->id = $formData['id'];
-				$this->_helper->redirector('index');
+					// add to registry
+					$nc = new Zend_Session_Namespace('cat');
+					$nc->id = $formData['id'];
+					$this->_helper->redirector('index');
+				}
 			} else {
 				$form->populate($formData);
 			}
 		}
 	}
-
 	private function setGeneralFormParams( $form )
 	{
 		$userMapper = new Application_Model_UserMapper();
-		$allShortnames['0'] = '';
-		$allShortnames += $userMapper->fetchAllShortnames();
+		$allShortnamesWithEmpty['0'] = '';
+		$allShortnames = $userMapper->fetchAllShortnames();
+		$allShortnamesWithEmpty += $allShortnames;
 		// id
 		$form->id->setAttrib( 'readonly', true );
 		// status
@@ -136,7 +176,22 @@ class CatController extends Zend_Controller_Action
 		// initiator
 		$form->initiatorid->setMultiOptions( $allShortnames);
 		//focalid
-		$form->focalid->setMultiOptions( $allShortnames);
+		$form->focalid->setMultiOptions( $allShortnamesWithEmpty);
+	}
+	/**
+	 * Form settings for approval of nc
+	 * @param <type> $form
+	 */
+	private function setApproveFormParams( $form )
+	{
+		// add submit button to form
+
+      $approve = new Zend_Form_Element_Submit('approve');
+      $approve->setLabel('Approve')
+			->setAttrib('onclick',"return confirm('Are you sure you want to approve?')" );
+
+
+	  $form->addElement( $approve );
 	}
 	/**
 	 * View form sets form params for only viewing
@@ -148,8 +203,6 @@ class CatController extends Zend_Controller_Action
 		$form->initdate->setAttrib( 'readonly', true );
 		$form->summary->setAttrib( 'readonly', true );
 		$form->details->setAttrib( 'readonly', true );
-
-
 	}
 
 	private function setUpdateFormParams( $form )
@@ -177,12 +230,9 @@ class CatController extends Zend_Controller_Action
 		$form->statusid->setValue( 1 );
 		// initiatorid
 		// set to current login user
-//		$form->initiatorid->setMultiOptions( $allShortnames);
 		$auth = Zend_Auth::getInstance();
         $id = $auth->getIdentity()->id;
 		$form->initiatorid->setValue( $id );
-		//focalid
-//		$form->focalid->setMultiOptions( $allShortnames);
 		// date  raised default to today
 		$form->initdate->setValue( date('Y-m-d') );
 
@@ -199,7 +249,25 @@ class CatController extends Zend_Controller_Action
             'ignore'   => true,
             'label'    => 'Save',
         ));
-	
+	}
+
+	/**
+	 * Extra check before submitting nc
+	 * @param <type> $cat
+	 * @return <type> boolean
+	 */
+	private function additionalCheck( $cat)
+	{
+		//
+		$result = true;
+		if (  !$cat->focalid ) {
+			$result = false;
+			$errorMsg = "Please assign the NonCompliance";
+		} elseif ( $cat->focalid == $cat->initiatorid ){
+			$result = false;
+			$errorMsg = "You can not assign the NonCompliance to yourself";
+		}
+		return $result;
 	}
 }
 

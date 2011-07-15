@@ -19,10 +19,12 @@ class CcItemController extends Zend_Controller_Action
     }
     public function indexAction()
     {
+			// get current nc
+			$cat = $this->view->getCurrentNc();
 
-			$cc = new Application_Model_CcItemMapper();
-			$this->view->entries = $cc->fetchAll();
-    }
+			$ccMapper = new Application_Model_CcItemMapper( );
+			$this->view->entries = $ccMapper->fetchAllItemsForNc( $cat->getId() );
+	}
 
 
 }
