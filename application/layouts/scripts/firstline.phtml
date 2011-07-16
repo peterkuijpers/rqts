@@ -1,0 +1,26 @@
+<td colspan="2" id="first_line">
+	<ul>
+		<li><a href="<?php echo $this->url(
+				array( 'controller' => 'index', ),
+				'default', true) ?>">Home</a>
+		</li>
+		<li>|</li>
+		<li><a href="<?php echo $this->url(
+				array( 'controller' => 'cat', ),
+				'default', true) ?>">Cats</a>
+		</li>
+		<li>|</li>
+		<li><a href="<?php echo $this->url(
+				array( 'controller' => 'user', ),
+				'default', true) ?>">User admin</a>
+		</li>
+		<li>|</li>
+		<li><a href="<?php echo $this->url(
+				array( 'controller' => 'settings', ),
+				'default', true) ?>">Settings</a>
+		</li>
+	</ul>
+	<ul style="float:right">
+		<li><?php echo $this->loggedInAs(); ?> </li>
+	</ul>
+</td>

@@ -144,9 +144,13 @@ class CatController extends Zend_Controller_Action
 						// add to registry
 						$nc = new Zend_Session_Namespace('cat');
 						$nc->id = $formData['id'];
+						$msg = "NonCompliance with ".$nc->id. " added successfully";
+ 						$this->_helper->flashMessenger->addMessage(array('successMsg'=>$msg));
 						$this->_helper->redirector('index');
+
 					} else {
-						echo "some extra validation errors";
+						// extrea validation errors
+						$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Extra validation errors'));
 					}
 				} else {
 					$mapper  = new Application_Model_CatMapper();
@@ -262,10 +266,10 @@ class CatController extends Zend_Controller_Action
 		$result = true;
 		if (  !$cat->focalid ) {
 			$result = false;
-			$errorMsg = "Please assign the NonCompliance";
+			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Please assign the NonCompliance'));
 		} elseif ( $cat->focalid == $cat->initiatorid ){
 			$result = false;
-			$errorMsg = "You can not assign the NonCompliance to yourself";
+			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'You can not assign the NonCompliance to yourself'));
 		}
 		return $result;
 	}

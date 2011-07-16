@@ -17,9 +17,11 @@ class AuthController extends Zend_Controller_Action
 		$form = new Application_Form_Login();
 		if ($form->isValid($request->getPost())) {
 			if ($this->_process($form->getValues())) {
+				// logged in
+//				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Logged in successfully'));
 				$this->_helper->redirector( 'index','index' );
 			} else {
-
+				$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Failed to login'));
 			}
 		}
     }

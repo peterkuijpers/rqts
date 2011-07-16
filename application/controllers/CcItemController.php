@@ -20,6 +20,7 @@ class CcItemController extends Zend_Controller_Action
 
     public function indexAction()
     {
+//			$this->_helper->flashMessenger->addMessage(array('successMsg'=>'The update was successful'));
 			// get current nc
 			$cat = $this->view->getCurrentNc();
 			$ccMapper = new Application_Model_CcItemMapper( );
