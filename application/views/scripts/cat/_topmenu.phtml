@@ -1,0 +1,24 @@
+<?php $this->placeholder('topmenu')->captureStart() ?>
+<?php $nc = new Zend_Session_Namespace('cat'); ?>
+<ul>
+	<li>
+		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'index', )) ?>">NC-list</a>
+	</li>
+	<li>
+	<a href="
+		<?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $nc->id )) ?>">NC-details</a>
+	</li>
+	<li>
+		<a href="
+		  <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'index','id' => $nc->id )) ?>">Correct&Contain</a>
+		  
+	</li>
+	<li>
+		<a href="">RCA</a>
+	</li>
+	<li>
+		<a href="">Follow-up</a>
+	</li>
+
+</ul>
+<?php $this->placeholder('topmenu')->captureEnd() ?>
