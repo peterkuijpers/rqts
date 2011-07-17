@@ -25,7 +25,8 @@ class CcItemController extends Zend_Controller_Action
 			$cat = $this->view->getCurrentNc();
 			$ccMapper = new Application_Model_CcItemMapper( );
 			// get all action items for the nc
-			$this->view->entries = $ccMapper->fetchAllItemsForNc( $cat->getId() );
+			Zend_Debug::dump( $cat );
+			$this->view->entries = $ccMapper->fetchAllItemsForCc( $cat->getId() );
     }
 
     public function newAction()

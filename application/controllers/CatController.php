@@ -43,10 +43,13 @@ class CatController extends Zend_Controller_Action
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
+			//
 			// check if it is 'approval'
 			if ( isset($formData['approve']) ) {
 				$catMapper = new Application_Model_CatMapper();
 				$catMapper->approve( $formData['id'] );
+
+
 				$this->_helper->redirector('index');
 			}
 			// check raised-by is me and status =draft
@@ -140,12 +143,26 @@ class CatController extends Zend_Controller_Action
 						$cat->setStatusid( 2);
 						// save to database
 						$mapper  = new Application_Model_CatMapper();
-						$mapper->save($cat);
+						$newCatId = $mapper->save($cat);
+
+
+						/*************
+						*
+						* create new (empty) CC
+						*
+						**************/
+						$cc = new Application_Model_Cc();
+						$cc->setId( $newCatId);
+						$ccMapper = new Application_Model_CcMapper(  );
+						$ccMapper->insert( $cc );
+
+
 						// add to registry
 						$nc = new Zend_Session_Namespace('cat');
-						$nc->id = $formData['id'];
+						$nc->id = $formData[100];
+						//
 						$msg = "NonCompliance with ".$nc->id. " added successfully";
- 						$this->_helper->flashMessenger->addMessage(array('successMsg'=>$msg));
+ 						$this->_helper->flashMessenger->addMessage(array('successMsg' => $msg));
 						$this->_helper->redirector('index');
 
 					} else {
@@ -153,6 +170,7 @@ class CatController extends Zend_Controller_Action
 						$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Extra validation errors'));
 					}
 				} else {
+					// save nc with status nc_draft
 					$mapper  = new Application_Model_CatMapper();
 					$mapper->save($cat);
 
@@ -166,6 +184,8 @@ class CatController extends Zend_Controller_Action
 			}
 		}
 	}
+
+
 	private function setGeneralFormParams( $form )
 	{
 		$userMapper = new Application_Model_UserMapper();

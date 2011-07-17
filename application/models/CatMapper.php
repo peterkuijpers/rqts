@@ -40,11 +40,13 @@ class Application_Model_CatMapper
 		$id = $cat->getId();
         if (null ===  $id ) {
             unset($data['id']);
-            $this->getDbTable()->insert($data);
+            return $this->getDbTable()->insert($data);
+
         } else {
 			echo 'update';
             $this->getDbTable()->update($data, array('id = ?' => $id));
         }
+		return $id;
     }
 
     public function find($id, Application_Model_Cat $cat)

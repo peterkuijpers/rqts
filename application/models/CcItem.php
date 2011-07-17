@@ -3,7 +3,7 @@
 class Application_Model_CcItem
 {
 	protected $_id;
-	protected $_ncid;
+	protected $_ccid;
 	protected $_description;
 	protected $_ownerid;
 	protected $_duedate;
@@ -57,15 +57,15 @@ class Application_Model_CcItem
     }
 
 
-    public function setNcid($ncid)
+    public function setCcid($ccid)
     {
-        $this->_ncid = (int)$ncid;
+        $this->_ccid = (int)$ccid;
         return $this;
     }
 
-	public function getNcid( )
+	public function getCcid( )
 	{
-		return $this->_ncid;
+		return $this->_ccid;
 	}
 
     public function setOwnerid($ownerid)

@@ -41,6 +41,9 @@
           <actionMethod actionName="update"/>
           <actionMethod actionName="delete"/>
         </controllerFile>
+        <controllerFile controllerName="Cc">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Login"/>
@@ -56,6 +59,7 @@
           <dbTableFile dbTableName="User"/>
           <dbTableFile dbTableName="Cat"/>
           <dbTableFile dbTableName="CcItem"/>
+          <dbTableFile dbTableName="Cc"/>
         </dbTableDirectory>
         <modelFile modelName="UserMapper"/>
         <modelFile modelName="User"/>
@@ -63,6 +67,8 @@
         <modelFile modelName="Cat"/>
         <modelFile modelName="CcItemMapper"/>
         <modelFile modelName="CcItem"/>
+        <modelFile modelName="Cc"/>
+        <modelFile modelName="CcMapper"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -130,6 +136,9 @@
           <viewControllerScriptsDirectory forControllerName="CcItem">
             <viewScriptFile forActionName="delete"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Cc">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -169,6 +178,7 @@
           <testApplicationControllerFile filesystemName="CatControllerTest.php"/>
           <testApplicationControllerFile filesystemName="SettingsControllerTest.php"/>
           <testApplicationControllerFile filesystemName="CcItemControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="CcControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

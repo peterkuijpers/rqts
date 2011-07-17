@@ -33,14 +33,13 @@ class Application_Model_CcItemMapper
     {
         $data = array(
 			'id' => $ccitem->getId(),
-			'ncid' =>$ccitem->getNcid(),
+			'ccid' =>$ccitem->getCcid(),
 			'description'	=> $ccitem->getDescription(),
 			'owner_id'		=> $ccitem->getOwnerid(),
 			'duedate'		=> $ccitem->getDuedate(),
             'completiondate'=> $ccitem->getCompletiondate(),
         );
 		$id = $ccitem->getId();
-		Zend_Debug::dump( $id);
         if (null ===  $id ) {
             unset($data['id']);
 			$this->getDbTable()->insert($data);
@@ -64,7 +63,7 @@ class Application_Model_CcItemMapper
         }
         $row = $result->current();
         $ccitem->setId($row->id)
-                  ->setNcid($row->ncid)
+                  ->setCcid($row->ccid)
                   ->setDescription($row->description )
                   ->setOwnerid($row->owner_id )
                   ->setDuedate($row->duedate )
@@ -82,7 +81,7 @@ class Application_Model_CcItemMapper
         foreach ($resultSet as $row) {
             $entry = new Application_Model_CcItem();
             $entry->setId($row->id)
-					->setNcid( $row->ncid)
+					->setCcid( $row->ccid)
 					->setDescription( $row->description)
 					->setOwnerid( $row->owner_id)
 					->setDuedate( $row->duedate)
@@ -105,12 +104,12 @@ class Application_Model_CcItemMapper
 	 * @param <type> $ncid 
 	 * @return <type> array of CcItems
 	 */
-	public function fetchAllItemsForNc( $ncid )
+	public function fetchAllItemsForCc( $ccid )
 	{
 		// first get cat/nc
-		$cat = new Application_Model_Cat( );
-		$catMapper = new Application_Model_CatMapper();
-		$result = $catMapper->getDbTable()->find($ncid);
+		$cc = new Application_Model_Cc( );
+		$ccMapper = new Application_Model_CcMapper();
+		$result = $ccMapper->getDbTable()->find($ccid);
         if (0 == count($result)) {
             return;
         }
@@ -121,7 +120,7 @@ class Application_Model_CcItemMapper
         foreach ($rowset as $row) {
             $entry = new Application_Model_CcItem();
             $entry->setId($row->id)
-					->setNcid( $row->ncid)
+					->setCcid( $row->ccid)
 					->setDescription( $row->description)
 					->setOwnerid( $row->owner_id)
 					->setDuedate( $row->duedate)

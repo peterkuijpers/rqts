@@ -4,7 +4,6 @@ class Application_Model_DbTable_Cat extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'nc';
-	protected $_dependentTables = array( 'Application_Model_DbTable_CcItem' );
 	protected $_referenceMap    = array(
         'Initiator' => array(
             'columns'           => 'initiatorid',
