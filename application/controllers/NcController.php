@@ -1,7 +1,8 @@
 <?php
 
-class CatController extends Zend_Controller_Action
+class NcController extends Zend_Controller_Action
 {
+
 	public  $_filtered;
 
     public function init()
@@ -14,23 +15,17 @@ class CatController extends Zend_Controller_Action
 
    public function postDispatch()
     {
-		$this->view->render('cat/_topmenu.phtml');
-		$this->view->render('cat/_sidebar.phtml');
+		$this->view->render('nc/_topmenu.phtml');
+		$this->view->render('nc/_sidebar.phtml');
     }
 
 	public function indexAction()
     {
         // action body
-		$cat = new Application_Model_CatMapper();
-		$catlist = $cat->fetchAll();
-		$this->view->entries = $catlist;
-/*
-		//unregister cat
-		$nc = new Zend_Session_Namespace('cat');
-		unset( $nc->id);
- * 
- */
-    }
+		$nc = new Application_Model_NcMapper();
+		$ncs = $nc->fetchAll();
+		$this->view->entries = $ncs;
+	}
 	/**
 	 * Updates nc-details when status = NC_Draft (code=1) and 'raised by' is 'me'
 	 * or else displays nc-details
@@ -38,15 +33,15 @@ class CatController extends Zend_Controller_Action
     public function updateAction()
     {
         // action body
-		$form = new Application_Form_Cat();
+		$form = new Application_Form_Nc();
 		$this->setGeneralFormParams($form);
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
 			// check if it is 'approval'
 			if ( isset($formData['approve']) ) {
-				$catMapper = new Application_Model_CatMapper();
-				$catMapper->approve( $formData['id'] );
+				$ncMapper = new Application_Model_NcMapper();
+				$ncMapper->approve( $formData['id'] );
 				$this->_helper->redirector('index');
 			}
 			// check raised-by is me and status =draft
@@ -65,19 +60,19 @@ class CatController extends Zend_Controller_Action
 			if ($formData['focalid'] == '0') unset( $formData['focalid']);
 			//
 			if ($form->isValid($formData)) {
-				// 
-				$cat = new Application_Model_Cat($formData);
+				//
+				$nc = new Application_Model_Nc($formData);
 				if ( isset( $formData['submit']))  {
 					//submit form change status to NC_Submitted
-					$cat->setStatusid( 2 );
+					$nc->setStatusid( 2 );
 				}
 				// save to database
-				$mapper  = new Application_Model_CatMapper();
-				$mapper->save($cat);
+				$mapper  = new Application_Model_NcMapper();
+				$mapper->save($nc);
 
 				// add to registry
 				$nc = new Zend_Session_Namespace('cat');
-				$nc->id = $cat->getId();
+				$nc->id = $nc->getId();
 				$this->_helper->redirector('index');
 			} else {
 				// invalid entry - resubmit form
@@ -86,9 +81,9 @@ class CatController extends Zend_Controller_Action
 		} else {
 			$id = $this->_getParam('id', 0);
 			if ($id > 0) {
-				$cat = new Application_Model_Cat();
-				$mapper = new Application_Model_CatMapper();
-				$data = $mapper->find( $id, $cat);
+				$nc = new Application_Model_Nc();
+				$mapper = new Application_Model_NcMapper();
+				$data = $mapper->find( $id, $nc);
 				//
 				// check raised-by is me and status =draft
 				// get login id
@@ -107,7 +102,7 @@ class CatController extends Zend_Controller_Action
 						$this->setApproveFormParams($form);
 					}
 				}
- 
+
 				$form->populate($data);
 
 				// add to registry
@@ -121,7 +116,7 @@ class CatController extends Zend_Controller_Action
     {
         // action body
 		// action body
-		$form = new Application_Form_Cat();
+		$form = new Application_Form_Nc();
 		// alter form
 		$this->setGeneralFormParams($form);
 		$this->setNewFormParams( $form );
@@ -132,15 +127,15 @@ class CatController extends Zend_Controller_Action
 			if ($formData['focalid'] == '0') unset( $formData['focalid']);
 			unset( $formData['id'] );
 			if ($form->isValid($formData)) {
-				$cat = new Application_Model_Cat($formData);
+				$nc = new Application_Model_Nc($formData);
 				if ( isset( $formData['submit']))  {
 					// Submit pressed
-					if ($this->additionalCheck( $cat ) ) {
+					if ($this->additionalCheck( $nc ) ) {
 						//set status to NC_Submitted
-						$cat->setStatusid( 2);
+						$nc->setStatusid( 2);
 						// save to database
-						$mapper  = new Application_Model_CatMapper();
-						$mapper->save($cat);
+						$mapper  = new Application_Model_NcMapper();
+						$mapper->save($nc);
 						// add to registry
 						$nc = new Zend_Session_Namespace('cat');
 						$nc->id = $formData['id'];
@@ -153,8 +148,8 @@ class CatController extends Zend_Controller_Action
 						$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Extra validation errors'));
 					}
 				} else {
-					$mapper  = new Application_Model_CatMapper();
-					$mapper->save($cat);
+					$mapper  = new Application_Model_NcMapper();
+					$mapper->save($nc);
 
 					// add to registry
 					$nc = new Zend_Session_Namespace('cat');
@@ -257,25 +252,22 @@ class CatController extends Zend_Controller_Action
 
 	/**
 	 * Extra check before submitting nc
-	 * @param <type> $cat
+	 * @param <type> $nc
 	 * @return <type> boolean
 	 */
-	private function additionalCheck( $cat)
+	private function additionalCheck( $nc)
 	{
 		//
 		$result = true;
-		if (  !$cat->focalid ) {
+		if (  !$nc->focalid ) {
 			$result = false;
 			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Please assign the NonCompliance'));
-		} elseif ( $cat->focalid == $cat->initiatorid ){
+		} elseif ( $nc->focalid == $nc->initiatorid ){
 			$result = false;
 			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'You can not assign the NonCompliance to yourself'));
 		}
 		return $result;
 	}
+
 }
-
-
-
-
 

@@ -11,29 +11,6 @@
 	} else
 		echo "No NonCompl selected";
 	echo "<br /><br />";
-/*
-	// get current user
-	$auth = Zend_Auth::getInstance();
-    if ($auth->hasIdentity()) {
-		$id = $auth->getIdentity()->id;
-		//get current user
-		$user = new Application_Model_User();
-		$userMapper = new Application_Model_UserMapper();
-		$userMapper->find( $id, $user );
-		//get noncompl details
-		$nc = new Application_Model_Cat();
-		$catMapper = new Application_Model_CatMapper();
-		$catMapper->find($cat->id, $nc);
-
-		// check if nc needs approving
-		echo "id ".$id." focalid: ".$nc->getFocalid();
-		if ( $user->id == $nc->getFocalid() && $nc->getStatusid() == 2 ) {
-			echo "<br />Please approve this Non compliance<br />";
-			echo "<a href='index.php'><button name='test' value='Approve NonCompl'></a>";
-		}
-	}
- * 
- */
 	?>
 
 <?php $this->placeholder('sidebar')->captureEnd() ?>

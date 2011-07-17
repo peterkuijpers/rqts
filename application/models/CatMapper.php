@@ -33,14 +33,7 @@ class Application_Model_CatMapper
     {
         $data = array(
 			'id' => $cat->getId(),
-			'initiatorid' =>$cat->getInitiatorid(),
-			'initdate' => $cat->getInitdate(),
-			'focalid' => $cat->getFocalid(),
-			'qaid' =>$cat->getQaid(),
-			'statusid' =>$cat->getStatusid(),
-			'summary' =>$cat->getSummary(),
-            'details'   => $cat->getDetails(),
-			
+			'statusid' =>$cat->getStatusid()
         );
 		$id = $cat->getId();
         if (null ===  $id ) {
@@ -60,13 +53,7 @@ class Application_Model_CatMapper
         }
         $row = $result->current();
         $cat->setId($row->id)
-                  ->setInitiatorid($row->initiatorid )
-                  ->setInitdate($row->initdate )
-                  ->setFocalid($row->focalid)
-                  ->setQaid($row->qaid)
-                  ->setStatusid($row->statusid)
-                  ->setSummary($row->summary)
-				  ->setDetails( $row->details );
+                  ->setStatusid($row->statusid);
 		return $row->toArray();
     }
 
@@ -77,13 +64,7 @@ class Application_Model_CatMapper
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Cat();
             $entry->setId($row->id)
-					->setInitiatorid( $row->initiatorid)
-					->setInitdate( $row->initdate)
-					->setFocalid( $row->focalid)
-					->setQaid( $row->qaid)
-					->setStatusid( $row->statusid)
-					->setSummary($row->summary)
-					->setDetails($row->details);
+					->setStatusid( $row->statusid);
             $entries[] = $entry;
         }
         return $entries;

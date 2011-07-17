@@ -60,7 +60,7 @@ class Application_Model_NcMapper
                   ->setInitdate($row->initdate )
                   ->setFocalid($row->focalid)
                   ->setQaid($row->qaid)
-                  ->setStatusid($row->statusid)
+  //                ->setStatusid($row->statusid)
                   ->setSummary($row->summary)
 				  ->setDetails( $row->details );
 		return $row->toArray();
@@ -77,7 +77,7 @@ class Application_Model_NcMapper
 					->setInitdate( $row->initdate)
 					->setFocalid( $row->focalid)
 					->setQaid( $row->qaid)
-					->setStatusid( $row->statusid)
+	//				->setStatusid( $row->statusid)
 					->setSummary($row->summary)
 					->setDetails($row->details);
             $entries[] = $entry;

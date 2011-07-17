@@ -1,11 +1,11 @@
 <?php
 
-class Application_Form_Cat extends Zend_Form
+class Application_Form_Nc extends Zend_Form
 {
     public function init()
     {
         /* Form Elements & Other Definitions Here ... */
-	    $this->setName("cat");
+	    $this->setName("nc");
         $this->setMethod('post');
 
         $this->addElement('text', 'id', array(

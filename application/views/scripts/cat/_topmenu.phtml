@@ -2,11 +2,11 @@
 <?php $nc = new Zend_Session_Namespace('cat'); ?>
 <ul>
 	<li>
-		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'index', )) ?>">NC-list</a>
+		<a href=" <?php echo $this->url( array( 'controller' => 'nc', 'action' => 'index', )) ?>">NC-list</a>
 	</li>
 	<li>
 	<a href="
-		<?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $nc->id )) ?>">NC-details</a>
+		<?php echo $this->url( array( 'controller' => 'nc', 'action' => 'update', 'id' => $nc->id )) ?>">NC-details</a>
 	</li>
 	<li>
 		<a href="

@@ -6,7 +6,7 @@ class Application_Model_Nc
 	protected $_initiatorid;
 	protected $_focalid;
 	protected $_qaid;
-	protected $_statusid;
+//	protected $_statusid;
 	protected $_initdate;
 	protected $_summary;
 	protected $_details;
@@ -22,7 +22,7 @@ class Application_Model_Nc
     {
         $method = 'set' . $name;
         if (('mapper' == $name) || !method_exists($this, $method)) {
-            throw new Exception('Invalid cat property');
+            throw new Exception('Invalid nc property');
         }
         $this->$method($value);
     }
@@ -31,7 +31,7 @@ class Application_Model_Nc
     {
         $method = 'get' . $name;
         if (('mapper' == $name) || !method_exists($this, $method)) {
-            throw new Exception('Invalid cat property');
+            throw new Exception('Invalid nc property');
         }
         return $this->$method();
     }
@@ -91,7 +91,7 @@ class Application_Model_Nc
     {
         return $this->_qaid;
     }
-
+/*
     public function setStatusid($statusid)
     {
         $this->_statusid = (int)$statusid;
@@ -102,7 +102,7 @@ class Application_Model_Nc
     {
         return $this->_statusid;
     }
-
+*/
     public function setInitdate($initdate)
     {
         $this->_initdate = (string)$initdate;

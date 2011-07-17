@@ -108,9 +108,9 @@ class Application_Model_CcItemMapper
 	public function fetchAllItemsForNc( $ncid )
 	{
 		// first get cat/nc
-		$cat = new Application_Model_Cat( );
-		$catMapper = new Application_Model_CatMapper();
-		$result = $catMapper->getDbTable()->find($ncid);
+		$nc = new Application_Model_Nc( );
+		$ncMapper = new Application_Model_NcMapper();
+		$result = $ncMapper->getDbTable()->find($ncid);
         if (0 == count($result)) {
             return;
         }
