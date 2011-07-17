@@ -1,0 +1,120 @@
+CREATE TABLE `user` (
+  id            int(10) NOT NULL AUTO_INCREMENT,
+  nickname      varchar(20) NOT NULL UNIQUE,
+  password      varchar(32) NOT NULL,
+  password_salt varchar(32),
+  firstname     varchar(50) NOT NULL,
+  lastname      varchar(50) NOT NULL,
+  email         varchar(50) NOT NULL,
+  init_level    int(1) DEFAULT 1 NOT NULL,
+  focal_level   int(1) DEFAULT 0 NOT NULL,
+  qa_level      int(1) DEFAULT 0 NOT NULL,
+  admin_level   int(1) DEFAULT 0 NOT NULL,
+  post_id       int(10),
+  department_id int(10),
+  access_level  int(10),
+  internal      int(1),
+  phone_nbr     varchar(10),
+  Supplier_id   int(10),
+  PRIMARY KEY (id));
+CREATE TABLE Department (
+  id          int(10) NOT NULL AUTO_INCREMENT,
+  name        varchar(50) NOT NULL,
+  description varchar(100),
+  PRIMARY KEY (id));
+CREATE TABLE post (
+  post_id     int(10) NOT NULL AUTO_INCREMENT,
+  name        varchar(50) NOT NULL,
+  description varchar(100),
+  PRIMARY KEY (post_id));
+CREATE TABLE nc (
+  id          int(10) NOT NULL,
+  initiatorid int(10) NOT NULL,
+  focalid     int(10),
+  qaid        int(10),
+  initdate    date NOT NULL,
+  categoryid  int(10),
+  nctypeid    int(10),
+  deptid      int(11),
+  qty         int(10),
+  iso_l1      int(11),
+  iso_l2      int(11),
+  iso_l3      int(11),
+  summary     varchar(100),
+  details     varchar(500),
+  PRIMARY KEY (id));
+CREATE TABLE Supplier (
+  supplier_id int(10) NOT NULL AUTO_INCREMENT,
+  name        varchar(50) NOT NULL,
+  phone_nbr   varchar(10),
+  PRIMARY KEY (supplier_id));
+CREATE TABLE `order` (
+  purchase_order_id int(11),
+  `Column`          int(10));
+CREATE TABLE file (
+  id       int(10) NOT NULL AUTO_INCREMENT,
+  ncid     int(11) NOT NULL,
+  filename varchar(255),
+  ncid2    int(10),
+  PRIMARY KEY (id));
+CREATE TABLE category (
+  id          int(10) NOT NULL AUTO_INCREMENT,
+  name        varchar(25) NOT NULL,
+  description varchar(50),
+  PRIMARY KEY (id));
+CREATE TABLE nctype (
+  id          int(10) NOT NULL AUTO_INCREMENT,
+  name        varchar(25) NOT NULL,
+  description varchar(50),
+  PRIMARY KEY (id));
+CREATE TABLE logitem (
+  loglog_id   int(10) NOT NULL,
+  `date`      datetime NOT NULL,
+  Description varchar(100) NOT NULL,
+  ncid        int(10) NOT NULL,
+  PRIMARY KEY (loglog_id,
+  ncid));
+CREATE TABLE log (
+  log_id int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (log_id));
+CREATE TABLE cc_item (
+  id             int(10) NOT NULL AUTO_INCREMENT,
+  description    varchar(200),
+  ownerid        int(10) NOT NULL,
+  duedate        date NOT NULL,
+  completiondate date,
+  ccid           int(10),
+  PRIMARY KEY (id));
+CREATE TABLE cc (
+  id             int(10) NOT NULL,
+  assigneeid     int(10) NOT NULL,
+  approvaldate   int(11),
+  verifierid     int(11),
+  verifydate     int(11),
+  verifystatusid int(11),
+  verifycomments varchar(100),
+  PRIMARY KEY (id));
+CREATE TABLE RCA (
+  id    int(10) NOT NULL,
+  catid int(10) NOT NULL,
+  PRIMARY KEY (id));
+CREATE TABLE cat (
+  id       int(10) NOT NULL AUTO_INCREMENT,
+  statusid int(10) NOT NULL,
+  PRIMARY KEY (id));
+ALTER TABLE `user` ADD INDEX FKuser378024 (post_id), ADD CONSTRAINT FKuser378024 FOREIGN KEY (post_id) REFERENCES post (post_id);
+ALTER TABLE `user` ADD INDEX FKuser330344 (department_id), ADD CONSTRAINT FKuser330344 FOREIGN KEY (department_id) REFERENCES Department (id);
+ALTER TABLE nc ADD INDEX Focal (focalid), ADD CONSTRAINT Focal FOREIGN KEY (focalid) REFERENCES `user` (id);
+ALTER TABLE nc ADD INDEX FKnc426845 (nctypeid), ADD CONSTRAINT FKnc426845 FOREIGN KEY (nctypeid) REFERENCES nctype (id);
+ALTER TABLE file ADD INDEX attached (ncid2), ADD CONSTRAINT attached FOREIGN KEY (ncid2) REFERENCES nc (id);
+ALTER TABLE logitem ADD INDEX FKlogitem733648 (ncid), ADD CONSTRAINT FKlogitem733648 FOREIGN KEY (ncid) REFERENCES nc (id);
+ALTER TABLE nc ADD INDEX FKnc51434 (categoryid), ADD CONSTRAINT FKnc51434 FOREIGN KEY (categoryid) REFERENCES category (id);
+ALTER TABLE logitem ADD INDEX FKlogitem168511 (loglog_id), ADD CONSTRAINT FKlogitem168511 FOREIGN KEY (loglog_id) REFERENCES log (log_id);
+ALTER TABLE `user` ADD INDEX FKuser94871 (Supplier_id), ADD CONSTRAINT FKuser94871 FOREIGN KEY (Supplier_id) REFERENCES Supplier (supplier_id);
+ALTER TABLE nc ADD INDEX QA (qaid), ADD CONSTRAINT QA FOREIGN KEY (qaid) REFERENCES `user` (id);
+ALTER TABLE cc_item ADD INDEX FKcc_item869340 (ccid), ADD CONSTRAINT FKcc_item869340 FOREIGN KEY (ccid) REFERENCES cc (id);
+ALTER TABLE cc ADD INDEX FKcc108140 (id), ADD CONSTRAINT FKcc108140 FOREIGN KEY (id) REFERENCES cat (id);
+ALTER TABLE RCA ADD INDEX FKRCA185916 (id), ADD CONSTRAINT FKRCA185916 FOREIGN KEY (id) REFERENCES cat (id);
+ALTER TABLE cc_item ADD INDEX FKcc_item311811 (ownerid), ADD CONSTRAINT FKcc_item311811 FOREIGN KEY (ownerid) REFERENCES `user` (id);
+ALTER TABLE nc ADD INDEX FKnc108481 (id), ADD CONSTRAINT FKnc108481 FOREIGN KEY (id) REFERENCES cat (id);
+ALTER TABLE nc ADD INDEX initiator (initiatorid), ADD CONSTRAINT initiator FOREIGN KEY (initiatorid) REFERENCES `user` (id);

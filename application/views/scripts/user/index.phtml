@@ -4,6 +4,8 @@
 ?>
 <div id="page_title">Users</div>
 <hr />
+<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'add', )) ?>">New user</a>
+		<br /><br />
 <table class="list_table">
 	<tr>
 		<th class="list_table">Nickname</th>
@@ -20,6 +22,7 @@
 		<td style="padding: 2px 10px 0px 10px">
 		<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
 		</td>
+		<td>
 		<a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'delete', 'id' => $entry->id )) ?>"
 		   onClick="return confirm('Are you sure you want to delete the user <?php echo $entry->firstname. " ".$entry->lastname; ?>?')">delete</a>
 		</td>
