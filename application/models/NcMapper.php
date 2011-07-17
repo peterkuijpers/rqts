@@ -1,12 +1,8 @@
 <?php
 
-
-/**
- * CatMapper
- * Mapping of database functions to Cat class/object
- */
-class Application_Model_CatMapper
+class Application_Model_NcMapper
 {
+
 	protected $_dbTable;
 
 	public function setDbTable( $dbTable )
@@ -24,25 +20,25 @@ class Application_Model_CatMapper
 	public function getDbTable()
     {
         if (null === $this->_dbTable) {
-            $this->setDbTable('Application_Model_DbTable_Cat');
+            $this->setDbTable('Application_Model_DbTable_Nc');
         }
         return $this->_dbTable;
     }
 
-    public function save(Application_Model_Cat $cat)
+    public function save(Application_Model_Nc $nc)
     {
         $data = array(
-			'id' => $cat->getId(),
-			'initiatorid' =>$cat->getInitiatorid(),
-			'initdate' => $cat->getInitdate(),
-			'focalid' => $cat->getFocalid(),
-			'qaid' =>$cat->getQaid(),
-			'statusid' =>$cat->getStatusid(),
-			'summary' =>$cat->getSummary(),
-            'details'   => $cat->getDetails(),
-			
+			'id' => $nc->getId(),
+			'initiatorid' =>$nc->getInitiatorid(),
+			'initdate'	=> $nc->getInitdate(),
+			'focalid'	=> $nc->getFocalid(),
+			'qaid'		=>$nc->getQaid(),
+			'statusid'	=>$nc->getStatusid(),
+			'summary'	=>$nc->getSummary(),
+            'details'	=> $nc->getDetails(),
+
         );
-		$id = $cat->getId();
+		$id = $nc->getId();
         if (null ===  $id ) {
             unset($data['id']);
             $this->getDbTable()->insert($data);
@@ -52,14 +48,14 @@ class Application_Model_CatMapper
         }
     }
 
-    public function find($id, Application_Model_Cat $cat)
+    public function find($id, Application_Model_Nc $nc)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
             return;
         }
         $row = $result->current();
-        $cat->setId($row->id)
+        $nc->setId($row->id)
                   ->setInitiatorid($row->initiatorid )
                   ->setInitdate($row->initdate )
                   ->setFocalid($row->focalid)
@@ -75,7 +71,7 @@ class Application_Model_CatMapper
         $resultSet = $this->getDbTable()->fetchAll();
         $entries   = array();
         foreach ($resultSet as $row) {
-            $entry = new Application_Model_Cat();
+            $entry = new Application_Model_Nc();
             $entry->setId($row->id)
 					->setInitiatorid( $row->initiatorid)
 					->setInitdate( $row->initdate)
@@ -89,10 +85,16 @@ class Application_Model_CatMapper
         return $entries;
     }
 
+	public function approve( $id )
+	{
+		$this->getDbTable()->update( array('statusid' => 3), array('id = ?' => $id) );
+	}
+
 	public function delete( $id )
 	{
         $this->getDbTable()->delete( 'id = '.$id );
 	}
 
 }
+
 

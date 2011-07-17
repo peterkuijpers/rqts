@@ -56,6 +56,7 @@
           <dbTableFile dbTableName="User"/>
           <dbTableFile dbTableName="Cat"/>
           <dbTableFile dbTableName="CcItem"/>
+          <dbTableFile dbTableName="Nc"/>
         </dbTableDirectory>
         <modelFile modelName="UserMapper"/>
         <modelFile modelName="User"/>
@@ -63,6 +64,8 @@
         <modelFile modelName="Cat"/>
         <modelFile modelName="CcItemMapper"/>
         <modelFile modelName="CcItem"/>
+        <modelFile modelName="Nc"/>
+        <modelFile modelName="NcMapper"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
