@@ -52,6 +52,7 @@
         <formFile formName="Settings"/>
         <formFile formName="Filter"/>
         <formFile formName="CcItem"/>
+        <formFile formName="Cc"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>

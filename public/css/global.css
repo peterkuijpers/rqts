@@ -66,7 +66,7 @@ body {
 }
 
 #header {
-	background-color:#4343a4;
+	background-color:#0071a0;
 	color: white;
 	margin: 0px 0px 0px 00px;
 	padding: 0px 0px 0px 10px;
@@ -76,7 +76,7 @@ body {
 	font-family: sans-serif;
 }
 #top_menu {
-	background-color:#4343a4;
+	background-color:#0071a0;
 	color: white;
 	padding-left: 5px;
 }
@@ -95,14 +95,14 @@ body {
 	padding-right: 10px;
 }
 #top_menu a:link {
-	background-color: #4343a4;
+	background-color: #0071a0;
 	color:white;
 	text-decoration:none;
 	padding-left: 10px;
 	padding-right: 10px;
 }
 #top_menu a:visited {
-	background-color: #4343a4;
+	background-color: #0071a0;
 	color: white;
 }
 #left_status {

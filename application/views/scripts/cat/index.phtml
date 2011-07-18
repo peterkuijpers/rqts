@@ -1,6 +1,15 @@
 <?php
-//	echo $this->form->setAction($this->url());
+
+// ensure user is logged in
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {
+	echo 'You must be logged in to access this page';
+	return;
+} else {
+	$userId = $auth->getIdentity()->id;
+}
 ?>
+
 <div id="page_title">NonCompliance List</div>
 <hr />
 		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add', )) ?>">New NC</a>

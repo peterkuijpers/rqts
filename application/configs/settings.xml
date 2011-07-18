@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : settings.xml.xml
+    Created on : 18 July 2011, 6:51 PM
+    Author     : Peter
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+	<database>
+		<host>localhost</host>
+		<username>root</username>
+		<password>root123</password>
+		<dbname>rqts</dbname>
+	</database>
+	<mailserver>mail.optusnet.com.au</mailserver>
+	<filedir>c:\users\peter\documents\rqts</filedir>
+</root>

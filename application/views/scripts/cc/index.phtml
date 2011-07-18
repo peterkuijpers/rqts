@@ -1,1 +1,100 @@
-<br /><br /><center>View script for controller <b>Cc</b> and script/action name <b>index</b></center>
+<div id="page_title">Correct & Contain</div>
+<hr />
+
+<?php
+//check access
+
+// ensure user is logged in
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity() ) {
+	echo 'You must be logged in to access this page';
+	return;
+} else {
+	$userId = $auth->getIdentity()->id;
+}
+//ensure an nc is selected
+$nc = $this->getCurrentNc();
+if ( ! $nc ) {
+	echo 'An NC must be selected before accessing this page';
+	return;
+}
+//ensure nc status if approved or higher
+if ( $nc->getStatusid() < 3 ) {     //   <3 is draft or submitted
+	echo 'The NC must be at least the Approved status';
+	return;
+}
+
+// all check passed
+?>
+
+<?php
+// only able to add items when status is NC_approved (3) or CC_rejected (5)
+$stat = $nc->getStatusid();
+if ( $stat == 3 || $stat ==5 ) { ?>
+	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">New Action item</a>
+	<br /><br />
+<?php
+}
+//
+// if status is CC_submitted and you are the assignee then approve or reject cc
+$cc = $this->getCurrentCc();
+if ( $stat == 4 && $cc->getAssigneeid() ==  $userId   ) {
+	?>
+	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">Approve this C & C</a>
+	<br /><br />
+	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">Reject this C & C</a>
+	<br /><br />
+<?php
+}
+
+?>
+<table class="list_table">
+	<tr>
+		<th class="list_table">Nbr</th>
+		<th class="list_table">Id</th>
+		<th class="list_table">Description</th>
+		<th class="list_table">Owner</th>
+		<th class="list_table">Due date</th>
+		<th class="list_table">Complete date</th>
+	</tr>
+	<?php
+		$user = new Application_Model_User();
+		$userMapper = new Application_Model_UserMapper();
+
+		$cnt = 1;
+		// do for all action items
+		foreach( $this->actions as $action ) {
+	?>
+
+	<tr>
+		<td><?php echo $cnt ?></td>
+		<td > <?php echo $this->escape( $action->id ) ?> </td>
+		<td > <?php echo $this->escape( $action->description ) ?> </td>
+		<td > <?php
+			if ( $userMapper->find( $action->ownerid, $user ) ) {
+				echo $this->escape( $user->getShortname() );
+			}
+			?>
+		</td>
+		<td > <?php echo $this->escape( $action->duedate ) ?> </td>
+		<td > <?php	echo $this->escape( $action->completiondate ) ?>	</td>
+		<td>
+		<a href="<?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'update', 'id' => $action->id )) ?>">details</a>
+		</td>
+		<td>
+		<a href="<?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'delete', 'id' => $action->id )) ?>"
+			onClick="return confirm('Are you sure you want to delete item number <?php echo $cnt ?> ?') ">
+			delete</a>
+		</td>
+
+	</tr>
+
+
+	<?php
+	$cnt++;
+	} ?>
+</table>
+<br />
+<?php
+//	echo $this->form->setAction($this->url());
+?>

@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_User extends Zend_Form
+class Application_Form_User extends Zend_Dojo_Form
 {
 
     public function init()

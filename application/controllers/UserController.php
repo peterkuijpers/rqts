@@ -30,6 +30,8 @@ class UserController extends Zend_Controller_Action
 		if ($id > 0) {
 			$mapper  = new Application_Model_UserMapper();
 			$mapper->delete($id);
+			$this->_helper->flashMessenger->addMessage(array('successMsg'=>'User deleted successfully'));
+
 		}	
 		$this->_helper->redirector( 'index' ); // back to login page
     }
@@ -49,8 +51,10 @@ class UserController extends Zend_Controller_Action
 				$user->setPassword( md5( $formData['password']));
 				$mapper  = new Application_Model_UserMapper();
 				$mapper->save($user);
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'User added successfully'));
 				$this->_helper->redirector('index');
 			} else {
+				$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'User not added'));
 				$form->populate($formData);
 			}
 		
@@ -70,7 +74,6 @@ class UserController extends Zend_Controller_Action
 				$user = new Application_Model_User($formData);
 				$user->setPassword(md5($formData['password']));
 				$mapper  = new Application_Model_UserMapper();
-				Zend_Debug::dump( $user);
 				$mapper->save($user);
 				$this->_helper->redirector('index');
 			} else {

@@ -10,10 +10,10 @@ class Zend_View_Helper_GetCurrentNc extends Zend_View_Helper_Abstract
 			$ncMapper->find($cat->id, $nc);
 			return $nc;
 		} else {
-			echo 'no id';
 			return;
 		}
 
 	}
+
 }
 ?>

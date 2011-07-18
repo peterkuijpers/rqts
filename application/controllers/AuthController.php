@@ -18,7 +18,7 @@ class AuthController extends Zend_Controller_Action
 		if ($form->isValid($request->getPost())) {
 			if ($this->_process($form->getValues())) {
 				// logged in
-//				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Logged in successfully'));
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Logged in successfully'));
 				$this->_helper->redirector( 'index','index' );
 			} else {
 				$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Failed to login'));
@@ -36,11 +36,14 @@ class AuthController extends Zend_Controller_Action
     {
         // action body
 		Zend_Auth::getInstance()->clearIdentity();
-        $this->_helper->redirector('index', 'index'); // back to login page
 		//
 		//unregister cat
 		$nc = new Zend_Session_Namespace('cat');
 		unset( $nc->id);
+	//	unset( $nc );
+	//	echo "logging out the cat/nc";
+		//
+        $this->_helper->redirector('index', 'index'); // back to login page
     }
    
 

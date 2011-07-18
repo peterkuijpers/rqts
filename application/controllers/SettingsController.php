@@ -12,8 +12,9 @@ class SettingsController extends Zend_Controller_Action
     {
         // action body
 		$form = new Application_Form_Settings();
-
-		$config = new Zend_Config_Ini( APPLICATION_PATH . 'configs/application.ini',
+		$this->view->form = $form;
+/*
+		$config = new Zend_Config_Xml( APPLICATION_PATH . 'configs/settings.xml',
                               null,
                               array('skipExtends'        => true,
                                     'allowModifications' => true));
@@ -22,11 +23,12 @@ class SettingsController extends Zend_Controller_Action
 		$config->production->hostname = 'foobar';
 
 		// Write the config file
-		$writer = new Zend_Config_Writer_Ini(array('config'   => $config,
-                                           'filename' => APPLICATION_PATH . 'configs/application.ini'));
+		$writer = new Zend_Config_Writer_Xml(array('config'   => $config,
+                                           'filename' => APPLICATION_PATH . 'configs/settings.xml'));
 		$writer->write();
     }
 
-
+*/
+	}
 }
 

@@ -1,5 +1,23 @@
 <div id="page_title">NonCompliance Details</div>
 <hr />
 <?php
+//check access
+
+// ensure user is logged in
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {
+	echo 'You must be logged in to access this page';
+//	$this->view->_helper->flashMessenger->addMessage(array('successMsg' => 'You must be logged in to access this page'));
+	return;
+}
+//ensure an nc is selected
+$nc = $this->getCurrentNc();
+if ( ! $nc ) {
+	echo 'An NC must be selected before accessing this page';
+//	$this->_helper->flashMessenger->addMessage(array('errorMsg' => 'An NC must be selected before accessing this page'));
+	return;
+}
+
+
 echo $this->form->setAction($this->url());
 ?>

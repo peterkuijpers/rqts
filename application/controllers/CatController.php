@@ -48,6 +48,7 @@ class CatController extends Zend_Controller_Action
 			if ( isset($formData['approve']) ) {
 				$catMapper = new Application_Model_CatMapper();
 				$catMapper->approve( $formData['id'] );
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was changed to "NC Approved" status'));
 
 
 				$this->_helper->redirector('index');
@@ -172,11 +173,26 @@ class CatController extends Zend_Controller_Action
 				} else {
 					// save nc with status nc_draft
 					$mapper  = new Application_Model_CatMapper();
-					$mapper->save($cat);
+					// save
+					$ncid =  $mapper->save($cat);
+
+					/*************
+					*
+					* create new (empty) CC
+					*
+					**************/
+					$cc = new Application_Model_Cc();
+					$cc->setId( $ncid);
+					$ccMapper = new Application_Model_CcMapper(  );
+					$ccMapper->insert( $cc );
 
 					// add to registry
 					$nc = new Zend_Session_Namespace('cat');
-					$nc->id = $formData['id'];
+					$nc->id = $ncid;
+					// message
+					$msg = 'NonCompliance with id '.$ncid . ' was saved as draft';
+					$this->_helper->flashMessenger->addMessage(array('successMsg'=> $msg));
+
 					$this->_helper->redirector('index');
 				}
 			} else {

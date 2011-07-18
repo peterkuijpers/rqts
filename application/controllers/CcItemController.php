@@ -20,13 +20,7 @@ class CcItemController extends Zend_Controller_Action
 
     public function indexAction()
     {
-//			$this->_helper->flashMessenger->addMessage(array('successMsg'=>'The update was successful'));
-			// get current nc
-			$cat = $this->view->getCurrentNc();
-			$ccMapper = new Application_Model_CcItemMapper( );
-			// get all action items for the nc
-			Zend_Debug::dump( $cat );
-			$this->view->entries = $ccMapper->fetchAllItemsForCc( $cat->getId() );
+
     }
 
     public function newAction()
@@ -41,16 +35,16 @@ class CcItemController extends Zend_Controller_Action
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
-			$formData['ncid'] = $this->view->getCurrentNc()->getId();
+			$formData['ccid'] = $this->view->getCurrentNc()->getId();
 			if ( $formData['completiondate'] == '' )  unset($formData['completiondate']);
 			unset( $formData['id'] );
 			if ($form->isValid($formData)) {
 				// save to database
 				$ccitem = new Application_Model_CcItem( $formData);
 				$mapper  = new Application_Model_CcItemMapper();
-				Zend_Debug::dump( $formData );
 				$mapper->save($ccitem);
-				$this->_helper->redirector('index');
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Action created successfully'));
+				$this->_helper->redirector('index', 'cc');
 			} else {
 				$form->populate($formData);
 			}
@@ -70,7 +64,7 @@ class CcItemController extends Zend_Controller_Action
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
-			$formData['ncid'] = $this->view->getCurrentNc()->getId();
+			$formData['ccid'] = $this->view->getCurrentNc()->getId();
 			if ( $formData['completiondate'] == '' )  unset($formData['completiondate']);
 			// unset( $formData['id'] );
 			if ($form->isValid($formData)) {
@@ -78,7 +72,8 @@ class CcItemController extends Zend_Controller_Action
 				$ccitem = new Application_Model_CcItem( $formData);
 				$mapper  = new Application_Model_CcItemMapper();
 				$mapper->save($ccitem);
-				$this->_helper->redirector('index');
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Action item updated successfully'));
+				$this->_helper->redirector('index', 'cc');
 			} else {
 				$form->populate($formData);
 			}
@@ -100,9 +95,10 @@ class CcItemController extends Zend_Controller_Action
 		$id = $this->_getParam('id', 0);
 		if ($id > 0) {
 			$mapper  = new Application_Model_CcItemMapper();
+			$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Action item deleted successfully'));
 			$mapper->delete($id);
 		}
-		$this->_helper->redirector( 'index' ); // back to login page
+		$this->_helper->redirector( 'index', 'cc' ); // back to login page
     }
 
 

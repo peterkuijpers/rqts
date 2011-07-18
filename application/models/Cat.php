@@ -83,7 +83,10 @@ class Application_Model_Cat
 
     public function setQaid($qaid)
     {
-        $this->_qaid = (int)$qaid;
+		if ( $qaid == 0 )
+			$this->_qaid = null;
+		else
+			$this->_qaid = (int)$qaid;
         return $this;
     }
 

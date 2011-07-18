@@ -26,14 +26,19 @@ class Application_Form_Cat extends Zend_Form
             'required'   => true,
             'label'      => 'Raised by',
         ));
-        $this->addElement('text', 'initdate', array(
+
+		$date = new Zend_Dojo_Form_Element_DateTextBox('initdate');
+
+		$this->addElement( $date );
+/*
+		$this->addElement('text', 'initdate', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'date'),
             'required'   => true,
 			'size'		=> 10,
             'label'      => 'Date raised',
         ));
-
+*/
         $this->addElement('select', 'focalid', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'Int' ),

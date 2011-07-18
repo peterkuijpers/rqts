@@ -65,10 +65,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$values = array(
 			'1' => 'NC_Draft',
 			'2' => 'NC_Submitted',
-			'3' => 'NC_Approved'
+			'3' => 'NC_Approved',
+			'4' => 'CC_Submitted',
 		);
 		Zend_Registry::set( 'status', $values );
 	}
+/*
+	public function _initDojo()
+	{
+		$this->bootstrap('view');
+		$view = $this->getResource('view');
 
+		$view->addHelperPath('Zend/Dojo/View/Helper/', 'Zend_Dojo_View_Helper');
+
+		Zend_Dojo::enableView($view);
+		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+		$viewRenderer->setView($view);
+	}
+*/
 }
 

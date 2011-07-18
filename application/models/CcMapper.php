@@ -43,7 +43,6 @@ class Application_Model_CcMapper
             'verifycomments'	=> $cc->getVerifycomments(),
         );
 		$id = $cc->getId();
-		Zend_Debug::dump( $id);
         if (null ===  $id ) {
             unset($data['id']);
 			$this->getDbTable()->insert($data);
@@ -96,7 +95,7 @@ class Application_Model_CcMapper
 	 * @param Application_Model_Cc $cc
 	 * @return <type>
 	 */
-    public function find($id, Application_Model_CcItem $ccitem)
+    public function find($id, Application_Model_Cc $ccitem)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
