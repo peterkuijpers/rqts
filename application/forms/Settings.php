@@ -35,6 +35,7 @@ class Application_Form_Settings extends Zend_Form
         $this->addElement('text', 'filedir', array(
             'required'   => false,
             'label'      => 'File download directory',
+			'size'       => '40',
         ));
 
         $this->addElement('submit', 'submit', array(

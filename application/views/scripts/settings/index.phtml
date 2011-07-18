@@ -1,1 +1,15 @@
-<br /><br /><center>View script for controller <b>Settings</b> and script/action name <b>index</b></center>
+
+<div id="page_title">Settings</div>
+<hr />
+<?php
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {
+	echo 'You must be logged in to access this page';
+	return;
+} else {
+	$userId = $auth->getIdentity()->id;
+}
+
+echo $this->form->setAction($this->url());
+
+?>

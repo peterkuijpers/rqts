@@ -1,9 +1,19 @@
 
-<?php
-//	echo $this->form->setAction($this->url());
-?>
 <div id="page_title">Users</div>
 <hr />
+<?php
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {
+	echo 'You must be logged in to access this page';
+	return;
+} else {
+	$userId = $auth->getIdentity()->id;
+}
+
+?>
+
+
+
 <a href=" <?php echo $this->url( array( 'controller' => 'user', 'action' => 'add', )) ?>">New user</a>
 		<br /><br />
 <table class="list_table">
