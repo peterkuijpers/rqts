@@ -1,12 +1,14 @@
-<div id="page_title"> Welcome </div>
+
+<div id="page_title">Welcome</div>
 <hr />
 <?php
-     $auth = Zend_Auth::getInstance();
-     if ($auth->hasIdentity()) {
-?>
-		
-			<p><a href="<?php echo $this->url( array( 'controller' => 'cat', ), 'default',  true) ?>">Cats</a></p>
-<?php } else { ?>
-		<p><a href="<?php echo $this->url( array( 'controller' => 'auth', ), 'default',  true) ?>">Login</a></p>
-<?php }
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {  ?>
+  	<a href=" <?php echo $this->url( array( 'controller' => 'auth', 'action' => 'index' )) ?>">Please login</a>
+		<br /><br />
+<?php } else {  ?>
+	<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'index' )) ?>">CATS</a>
+		<br /><br />
+<?php }  
+
 ?>
