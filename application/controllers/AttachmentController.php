@@ -23,10 +23,25 @@ class AttachmentController extends Zend_Controller_Action
         // action body
 		$nc = $this->view->getCurrentNc();
 
-		$thisDir= $this->view->getDownloadDir( $nc );
+		$thisDir= $this->view->getDownloadDir( $nc )."/.";
 
-		echo $thisDir;
-		
+		echo $thisDir. "<br/>";
+
+		$list = array();
+		$fi =array();
+		$cnt = 1;
+		if ( $thisDir ) {
+			$dir = new DirectoryIterator(dirname( $thisDir ));
+			foreach ($dir as $fileinfo) {
+				if (! $fileinfo->isDot()) {
+					$fi['name'] =  $fileinfo->getFilename();
+					$fi['size'] = $fileinfo->getSize();
+					$fi['time'] = $fileinfo->getCTime();
+					$list[] = $fi;
+				}
+			}
+		}
+		$this->view->files = $list;	
     }
 
     public function downloadAction()

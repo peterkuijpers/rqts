@@ -3,45 +3,38 @@
 ?>
 <div id="page_title">Attachments</div>
 <hr />
-<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">New Action item</a>
+<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">Upload file</a>
 <br /><br />
 
 <table class="list_table">
 	<tr>
 		<th class="list_table">Nbr</th>
-		<th class="list_table">Id</th>
-		<th class="list_table">Description</th>
-		<th class="list_table">Owner</th>
-		<th class="list_table">Due date</th>
-		<th class="list_table">Complete date</th>
+		<th class="list_table">File name</th>
+		<th class="list_table">Size (kB)</th>
+		<th class="list_table">Date</th>
 	</tr>
 	<?php
 		$user = new Application_Model_User();
 		$userMapper = new Application_Model_UserMapper();
 
 		$cnt = 1;
-		// do for all action items
-		foreach( $this->entries as $entry ) {
+		// do for all files in the directory
+		foreach( $this->files as $file ) {
+		
 	?>
 
 	<tr>
 		<td><?php echo $cnt ?></td>
-		<td > <?php echo $this->escape( $entry->id ) ?> </td>
-		<td > <?php echo $this->escape( $entry->description ) ?> </td>
-		<td > <?php
-			if ( $userMapper->find( $entry->ownerid, $user ) ) {
-				echo $this->escape( $user->getShortname() );
-			}
-			?>
-		</td>
-		<td > <?php echo $this->escape( $entry->duedate ) ?> </td>
-		<td > <?php	echo $this->escape( $entry->completiondate ) ?>	</td>
+		<td > <?php echo $file['name'] ?> </td>
+		<td > <?php echo $this->escape( ceil((int)$file['size'] / 1024)) ?> </td>
+		<td > <?php echo $this->escape( date( 'Y-m-d', $file['time'] )) ?> </td>
+
 		<td>
-		<a href="<?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
+		<a href="<?php echo $this->url( array( 'controller' => 'attachment' )) ?>">download</a>
 		</td>
 		<td>
-		<a href="<?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'delete', 'id' => $entry->id )) ?>"
-			onClick="return confirm('Are you sure you want to delete item number <?php echo $cnt ?> ?') ">
+		<a href="<?php echo $this->url( array( 'controller' => 'attachment' )) ?>"
+			onClick="return confirm('Are you sure you want to delete file\n<?php echo $file['name'] ?>?') ">
 			delete</a>
 		</td>
 
@@ -50,4 +43,8 @@
 	$cnt++;
 	} ?>
 </table>
+
+<br />
+<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update'  )) ?>">Back</a>
+<br /><br />
 <br />
