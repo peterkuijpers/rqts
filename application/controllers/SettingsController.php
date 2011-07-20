@@ -2,8 +2,8 @@
 
 class SettingsController extends Zend_Controller_Action
 {
+	private $_CONFIGFILE =  '/configs/application.ini';
 
-	protected $_data = array();
 
     public function init()
     {
@@ -12,16 +12,16 @@ class SettingsController extends Zend_Controller_Action
 
     public function indexAction()
     {
-
-
 		$form = new Application_Form_Settings();
 		$this->view->form = $form;
-
 
 		if ($this->getRequest()->isPost()) {
 			$formData = $this->getRequest()->getPost();
 			if ($form->isValid($formData)) {
+				//
 				// save
+				$this->writeData( $formData );
+				//
 				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Updated successfully'));
 				$this->_helper->redirector('index');
 			} else {
@@ -37,37 +37,34 @@ class SettingsController extends Zend_Controller_Action
 
 	public function readData()
 	{
-		$config = new Zend_Config_Xml( APPLICATION_PATH . '/configs/settings.xml',
-						  null,
-						  array('skipExtends'        => true,
-								'allowModifications' => true));
+		$config = new Zend_Config_Ini( APPLICATION_PATH . $this->_CONFIGFILE, 'development');
+
 		$result = array();
-		$result[ 'host'] = $config->database->host;
-		$result[ 'password'] = $config->database->password;
-		$result['username'] = $config->database->username;
-		$result['dbname'] = $config->database->dbname;
+		$result[ 'host'] = $config->resources->db->params->host;
+		$result[ 'password'] = $config->resources->db->params->password;
+		$result['username'] = $config->resources->db->params->username;
+		$result['dbname'] = $config->resources->db->params->dbname;
 
 		$result['mailserver'] = $config->mailserver;
 		$result['filedir'] = $config->filedir;
 		return  $result;
 	}
 
+	public function writeData( $data )
+	{
+		$config = new Zend_Config_Ini( APPLICATION_PATH . $this->_CONFIGFILE, null,
+					array('skipExtends' => true, 'allowModifications' => true) );
+		
 
 
+		$config->setExtend('development', 'production');
 
-}
 
+		$config->development->mailserver = $data['mailserver'];
+		$config->development->filedir = $data['filedir'];
 
-/*
-
-		// Modify a value
-		$config->production->hostname = 'foobar';
-
-		// Write the config file
-		$writer = new Zend_Config_Writer_Xml(array('config'   => $config,
-                                           'filename' => APPLICATION_PATH . '/configs/settings.xml'));
+		$writer = new Zend_Config_Writer_Ini(array('config'   => $config,
+                                           'filename' => APPLICATION_PATH . $this->_CONFIGFILE));
 		$writer->write();
-    }
-
-*/
-
+	}
+}

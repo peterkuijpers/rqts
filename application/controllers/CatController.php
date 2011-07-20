@@ -38,6 +38,8 @@ class CatController extends Zend_Controller_Action
     public function updateAction()
     {
         // action body
+
+
 		$form = new Application_Form_Cat();
 		$this->setGeneralFormParams($form);
 		$this->view->form = $form;

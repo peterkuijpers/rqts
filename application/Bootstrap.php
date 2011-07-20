@@ -16,14 +16,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view = $this->getResource('view');
         $view->doctype('XHTML1_STRICT');
 	}
-/*
-	protected function _initRestRouter()
-	{
-		$front  = Zend_Controller_Front::getInstance();
-		$restRoute = new Zend_Rest_Route($front);
-		$front->getRouter()->addRoute('default', $restRoute);
-	}
-*/
+
 	protected function _initSidebar()
     {
         $this->bootstrap('View');
@@ -69,6 +62,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'4' => 'CC_Submitted',
 		);
 		Zend_Registry::set( 'status', $values );
+	}
+
+	protected function _initDownloadDir()
+	{
+
 	}
 /*
 	public function _initDojo()
