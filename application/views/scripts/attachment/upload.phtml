@@ -1,1 +1,25 @@
-<br /><br /><center>View script for controller <b>Attachment</b> and script/action name <b>upload</b></center>
+
+<div id="page_title">Upload attachement</div>
+<hr />
+<?php
+//check access
+
+// ensure user is logged in
+$auth = Zend_Auth::getInstance();
+if ( ! $auth->hasIdentity()) {
+	echo 'You must be logged in to access this page';
+	return;
+}
+//ensure an nc is selected
+$nc = $this->getCurrentNc();
+if ( ! $nc ) {
+	echo 'An NC must be selected before accessing this page';
+	return;
+}
+
+?>
+
+
+<?php
+echo $this->form->setAction($this->url());
+?>
