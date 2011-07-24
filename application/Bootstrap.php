@@ -30,6 +30,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
              // "postfix" -> markup to emit once after all items in a collection
              ->setPostfix("</div>\n</div>");
     }
+	protected function _initFilter()
+	{
+		$this->bootstrap('View');
+        $view = $this->getResource('View');
+
+		$view->placeholder('filter')
+             // "prefix" -> markup to emit once before all items in collection
+             ->setPrefix("<div class=\"filter\">\n    <div class=\"block\">\n")
+             // "separator" -> markup to emit between items in a collection
+             ->setSeparator("</div>\n    <div class=\"block\">\n")
+             // "postfix" -> markup to emit once after all items in a collection
+             ->setPostfix("</div>\n</div>");
+	}
 	/**
 	 * Initiate topmenu
 	 */
@@ -68,7 +81,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 
 	}
-/*
+
 	public function _initDojo()
 	{
 		$this->bootstrap('view');
@@ -80,6 +93,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 		$viewRenderer->setView($view);
 	}
-*/
+	public function _initLog()
+	{
+		$this->bootstrap('view');
+		$view = $this->getResource('view');
+
+		$logger = new Zend_Log();
+
+		$writer = new Zend_Log_Writer_Stream('c:\users\peter\documents\rqts\log\rqts.log');
+		$formatter = new Zend_Log_Formatter_Simple('%timestamp% user=%user% ncid=%ncid% action=%action%: %message%' . PHP_EOL);
+		$writer->setFormatter( $formatter);
+		$logger->addWriter($writer);
+
+		$view->logger = $logger;
+	}
 }
 

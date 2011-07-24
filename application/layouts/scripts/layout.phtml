@@ -3,15 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Quickstart Application</title>
+  <title>RQTS Quality Control Systems</title>
   <?php echo $this->headLink()->appendStylesheet('/css/global.css') ?>
   <?php
-//  if ( $this->dojo()->isEnabled() ) {
-//	  $this->dojo()->setLocalPath( $this->baseUrl() . '/scripts/dojo/dojo/dojo.js');
-//	  $this->dojo()->addStyleSheetModule('scripts.dojo.dijit.themes.tundra');
-//					->addLayer($this->baseUrl() . '/scripts/dojo/dojo/dojo.js');
-//	  echo $this->dojo();
-//  }
+  if ( $this->dojo()->isEnabled() ) {
+	  $this->dojo()->setLocalPath(  '/scripts/dojo/dojo/dojo.js')
+				->addStyleSheetModule( 'dijit.themes.tundra')
+    			->addLayer(  '/scripts/dojo/dojo/dojo.js');
+	  echo $this->dojo();
+  }
 ?>
 </head>
 <body class="tundra">
@@ -29,6 +29,8 @@
 		<tr>
 			<td id="left_menu" width="150px" rowspan="2">
 				<?php echo $this->placeholder('sidebar') ?>
+				<?php echo $this->placeholder('filter') ?>
+
 			</td>
 			<td id="top_menu">
 				<?php echo $this->placeholder('topmenu') ?>

@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Cat extends Zend_Form
+class Application_Form_Cat extends Zend_Dojo_Form
 {
     public function init()
     {
@@ -15,31 +15,33 @@ class Application_Form_Cat extends Zend_Form
             ),
             'required'   => false,
             'label'      => 'Id',
+			'readonly'	=> 'readonly',
         ));
 
-        $this->addElement('select', 'statusid', array(
+        $this->addElement('FilteringSelect', 'statusid', array(
             'required'  => true,
             'label'     => 'Status',
+			'readonly'  =>'readonly',
         ));
 
-		$this->addElement('select', 'initiatorid', array(
+		$this->addElement('FilteringSelect', 'initiatorid', array(
             'required'   => true,
             'label'      => 'Raised by',
+			'readonly'	=> 'readonly',
         ));
 
-//		$date = new Zend_Dojo_Form_Element_DateTextBox('initdate');
+		//
+		$this->addElement(
+			'DateTextBox',
+			'initdate',
+			array(
+				'value' => '2008-07-05',
+				'label' => 'Date raised',
+				'required'  => true,
+			)
+		);
 
-//		$this->addElement( $date );
-
-		$this->addElement('text', 'initdate', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array( 'date'),
-            'required'   => true,
-			'size'		=> 10,
-            'label'      => 'Date raised',
-        ));
-
-        $this->addElement('select', 'focalid', array(
+		$this->addElement('FilteringSelect', 'focalid', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'Int' ),
             'required'   => false,

@@ -86,6 +86,27 @@ class Application_Model_CatMapper
         return $entries;
     }
 
+	public function fetchAllMy( $id ) {
+		$str = 'initiatorid = '.$id.' or focalid='.$id;
+		$resultSet = $this->getDbTable()->fetchAll( $str  );
+        $entries   = array();
+        foreach ($resultSet as $row) {
+            $entry = new Application_Model_Cat();
+            $entry->setId($row->id)
+					->setInitiatorid( $row->initiatorid)
+					->setInitdate( $row->initdate)
+					->setFocalid( $row->focalid)
+					->setQaid( $row->qaid)
+					->setStatusid( $row->statusid)
+					->setSummary($row->summary)
+					->setDetails($row->details);
+            $entries[] = $entry;
+        }
+        return $entries;
+
+
+	}
+
 	public function approve( $id )
 	{
 		$this->getDbTable()->update( array('statusid' => 3), array('id = ?' => $id) );

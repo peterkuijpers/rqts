@@ -14,7 +14,12 @@ if ( ! $auth->hasIdentity()) {
 <hr />
 		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add', )) ?>">New NC</a>
 		<br /><br />
-
+<?php
+		if ( ! $this->entries ) {
+			echo "No entries found";
+			return;
+		}
+?>
 <table class="list_table">
 	<tr>
 		<th class="list_table">Id</th>
@@ -26,6 +31,7 @@ if ( ! $auth->hasIdentity()) {
 	<?php 
 		$user = new Application_Model_User();
 		$userMapper = new Application_Model_UserMapper();
+
 		foreach( $this->entries as $entry ) { 
 	?>
 

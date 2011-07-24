@@ -1,0 +1,35 @@
+<?php $this->placeholder('filter')->captureStart() ?>
+
+<?php
+	$cat = new Zend_Session_Namespace('cat');
+	$nc = $this->getCurrentNc();
+	if ( ! isset ($nc)) {
+		echo "No NC selected";
+		return;
+	}
+
+	$filter = new Zend_Session_Namespace('filter');
+	$filterType = $filter->type;
+	?>
+
+<form action="/cat/filter" method="post">
+	<fieldset>
+		<legend>Filter</legend>
+		<ul>
+			<li><input type="radio" name="nc" value="AllNc" <?php if ( $filterType=='AllNc')echo 'checked' ?>  >All NC's</li>
+			<li><input type="radio" name="nc" value="MyNc" <?php if ( $filterType=='MyNc') echo 'checked' ?>>My NC's</li>
+			<li><ul>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nc_init" >nc initiator (3) </li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">nc owner</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">nc approver</li>
+			</ul></li>
+			<li>
+				<input type="radio" name="nc" value="NcId" <?php if ( $filterType=='NcId') echo 'checked' ?>/>Nc Id&nbsp;<input type="text" name="ncid" id="ncid" size="8" />
+			</li>
+			<li><input type="submit" id="submit" name="submit" value="Apply"></li>
+		</ul>
+	</fieldset>
+</form>
+
+
+<?php $this->placeholder('filter')->captureEnd() ?>

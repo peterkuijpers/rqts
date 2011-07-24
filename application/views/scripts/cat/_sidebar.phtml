@@ -4,37 +4,32 @@
 <?php 
 	$cat = new Zend_Session_Namespace('cat');
 	$nc = $this->getCurrentNc();
-	if ( isset ($nc)) {
-		echo "NC id: <b>".$nc->getId()."</b><br/>";
-		echo "Status: <b>" . $this->getStatusDescription( $nc->getStatusid() ) . "</b><br />";
-		echo "summary: <br/><b>".$nc->getSummary() . "</b><br />";
-
-	} else
-		echo "No NonCompl selected";
-	echo "<br /><br />";
-/*
-	// get current user
-	$auth = Zend_Auth::getInstance();
-    if ($auth->hasIdentity()) {
-		$id = $auth->getIdentity()->id;
-		//get current user
-		$user = new Application_Model_User();
-		$userMapper = new Application_Model_UserMapper();
-		$userMapper->find( $id, $user );
-		//get noncompl details
-		$nc = new Application_Model_Cat();
-		$catMapper = new Application_Model_CatMapper();
-		$catMapper->find($cat->id, $nc);
-
-		// check if nc needs approving
-		echo "id ".$id." focalid: ".$nc->getFocalid();
-		if ( $user->id == $nc->getFocalid() && $nc->getStatusid() == 2 ) {
-			echo "<br />Please approve this Non compliance<br />";
-			echo "<a href='index.php'><button name='test' value='Approve NonCompl'></a>";
-		}
+	if ( ! isset ($nc)) {
+		echo "No NC selected";
+		return;
 	}
- * 
- */
+
+	$filter = new Zend_Session_Namespace('filter');
+	$filterType = $filter->type;
 	?>
+<fieldset>
+	<legend>NC info</legend>
+<table>
+	<tr>
+		<td>NC id</td>
+		<td style="background-color: lightgray;border:1px black solid"><?php echo $nc->getId() ?></td>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td style="background-color: lightgray; border:1px black solid"><?php echo $this->getStatusDescription( $nc->getStatusid() ) ?></td>
+	</tr>
+	<tr>
+		<td colspan="2">Summary</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="background-color: lightgray; border:1px black solid"><?php echo $nc->getSummary() ?></td>
+	</tr>
+</table>
+</fieldset>
 
 <?php $this->placeholder('sidebar')->captureEnd() ?>

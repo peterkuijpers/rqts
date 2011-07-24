@@ -55,6 +55,9 @@
           <actionMethod actionName="upload"/>
           <actionMethod actionName="delete"/>
         </controllerFile>
+        <controllerFile controllerName="Log">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Login"/>
@@ -170,6 +173,9 @@
           <viewControllerScriptsDirectory forControllerName="Attachment">
             <viewScriptFile forActionName="delete"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Log">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -213,6 +219,7 @@
           <testApplicationControllerFile filesystemName="FileControllerTest.php"/>
           <testApplicationControllerFile filesystemName="IndexControllerTest.php"/>
           <testApplicationControllerFile filesystemName="AttachmentControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="LogControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

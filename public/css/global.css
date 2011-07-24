@@ -78,7 +78,11 @@ body {
 #top_menu {
 	background-color:#0071a0;
 	color: white;
+	margin-top: 0px;
+	padding-top: 0px;
 	padding-left: 5px;
+	vertical-align: top;
+	height: 25px;
 }
 #top_menu ul {
 	list-style-type: none;
@@ -105,18 +109,12 @@ body {
 	background-color: #0071a0;
 	color: white;
 }
-#left_status {
-	font-size: 12px;
-}
-#left_status input {
-	font-size:10px;
-}
+
 #left_menu {
 	background-color:#92b0ff;
 	vertical-align:top;
-	padding-left: 10px;
-	padding-top: 10px;
-	width: 200px;
+	padding: 10px 2px 2px 2px;
+	min-width: 200px;
 }
 #left_menu ul {
 	float: left;
@@ -132,6 +130,7 @@ body {
 }
 
 #content {
+	vertical-align:top;
 	background-color:gainsboro;
 	min-height: 300px;
 	padding-left: 10px;
@@ -150,6 +149,7 @@ body {
 	margin-left: 40px;
 	margin-bottom: 5px;
 	font-size: 20pt;
+	vertical-align: top;
 }
 #error_msg {
 	background-color: red;

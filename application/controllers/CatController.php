@@ -16,21 +16,37 @@ class CatController extends Zend_Controller_Action
     {
 		$this->view->render('cat/_topmenu.phtml');
 		$this->view->render('cat/_sidebar.phtml');
+		$this->view->render('cat/_filter.phtml');
     }
 
 	public function indexAction()
     {
-        // action body
+
 		$cat = new Application_Model_CatMapper();
-		$ncs = $cat->fetchAll();
+		// 
+		// get filter
+		$filter = new Zend_Session_Namespace('filter');
+		$type = $filter->type;
+		$id = $filter->ncid;
+		if ( $type == "MyNc" ) {
+			// get 'my id'
+			$auth = Zend_Auth::getInstance();
+			$loginId = $auth->getIdentity()->id;
+			// get all nc's that belong to me
+			$ncs = $cat->fetchAllMy( $loginId );
+		} elseif ( $type == "NcId" ) {
+//			Zend_Debug::dump(  $id );
+			$nc = new Application_Model_Cat();
+			$cat->find( $id, $nc );
+			$ncs = array();
+			if ( $nc->getId() != null)
+				$ncs[] = $nc;
+		} else  // default select all
+			$ncs = $cat->fetchAll();
+		//
 		$this->view->entries = $ncs;
-/*
-		//unregister cat
-		$nc = new Zend_Session_Namespace('cat');
-		unset( $nc->id);
- * 
- */
     }
+
 	/**
 	 * Updates nc-details when status = NC_Draft (code=1) and 'raised by' is 'me'
 	 * or else displays nc-details
@@ -51,7 +67,6 @@ class CatController extends Zend_Controller_Action
 				$catMapper = new Application_Model_CatMapper();
 				$catMapper->approve( $formData['id'] );
 				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was changed to "NC Approved" status'));
-
 
 				$this->_helper->redirector('index');
 			}
@@ -75,8 +90,13 @@ class CatController extends Zend_Controller_Action
 				$cat = new Application_Model_Cat($formData);
 				if ( isset( $formData['submit']))  {
 					//submit form change status to NC_Submitted
+					$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was submitted'));
 					$cat->setStatusid( 2 );
-				}
+				} else
+					$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was saved'));
+					//enter line in log
+					$this->view->logMessage( array( 'user'=>$loginId, 'ncid'=>$cat->getId(), 'action'=>'Nc Updated', 'message'=>'NC_Draft'));
+
 				// save to database
 				$mapper  = new Application_Model_CatMapper();
 				$mapper->save($cat);
@@ -87,6 +107,7 @@ class CatController extends Zend_Controller_Action
 				$this->_helper->redirector('index');
 			} else {
 				// invalid entry - resubmit form
+				$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Non Compliance not submitted or saved'));
 				$form->populate($formData);
 			}
 		} else {
@@ -105,6 +126,7 @@ class CatController extends Zend_Controller_Action
 					echo '>>Owner can update draft';
 					$this->setUpdateFormParams($form);
 				} else {
+					// display only
 					echo '>>Display only';
 					$this->setViewFormParams( $form);
 					// check if current user is focal and nc-status = nc_submitted
@@ -148,7 +170,9 @@ class CatController extends Zend_Controller_Action
 						$mapper  = new Application_Model_CatMapper();
 						$newCatId = $mapper->save($cat);
 
-
+						//enter line in log
+						$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>'P Kuijpers', 'action'=>'New Nc', 'message'=>'NC_Draft'));
+						
 						/*************
 						*
 						* create new (empty) CC
@@ -164,7 +188,7 @@ class CatController extends Zend_Controller_Action
 						$nc = new Zend_Session_Namespace('cat');
 						$nc->id = $formData[100];
 						//
-						$msg = "NonCompliance with ".$nc->id. " added successfully";
+						$msg = "NonCompliance with id '".$newCatId. "' added successfully";
  						$this->_helper->flashMessenger->addMessage(array('successMsg' => $msg));
 						$this->_helper->redirector('index');
 
@@ -177,6 +201,9 @@ class CatController extends Zend_Controller_Action
 					$mapper  = new Application_Model_CatMapper();
 					// save
 					$ncid =  $mapper->save($cat);
+
+					//enter line in log
+					$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>'P Kuijpers', 'action'=>'New Nc', 'message'=>'NC_Draft'));
 
 					/*************
 					*
@@ -203,6 +230,23 @@ class CatController extends Zend_Controller_Action
 		}
 	}
 
+	// get the filter values from the sidebar form and store them as Globals
+	public function filterAction()
+	{
+		$this->view->selection = "All";
+		if ($this->getRequest()->isPost()) {
+			$formData = $this->getRequest()->getPost();
+//			Zend_Debug::dump( $formData );
+//			echo $formData['nc'];
+			$filter = new Zend_Session_Namespace('filter');
+			$filter->type = $formData['nc'];
+			$filter->ncid = $formData['ncid'];
+
+			$this->_helper->redirector('index');
+
+		}
+
+	}
 
 	private function setGeneralFormParams( $form )
 	{
@@ -242,7 +286,11 @@ class CatController extends Zend_Controller_Action
 	private function setViewFormParams( $form )
 	{
 		$form->id->setAttrib( 'readonly' , true);
+		$form->statusid->setAttrib( 'readonly', true );
+
+		$form->initiatorid->setAttrib( 'readonly', true );
 		$form->initdate->setAttrib( 'readonly', true );
+		$form->focalid->setAttrib( 'readonly', true );
 		$form->summary->setAttrib( 'readonly', true );
 		$form->details->setAttrib( 'readonly', true );
 	}
