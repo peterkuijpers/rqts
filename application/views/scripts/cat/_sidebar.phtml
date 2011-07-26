@@ -1,20 +1,20 @@
 <?php $this->placeholder('sidebar')->captureStart() ?>
 <h4>Cats admin</h4>
 
-<?php 
+<fieldset>
+	<legend>NC info</legend>
+
+<table>
+
+<?php
 	$cat = new Zend_Session_Namespace('cat');
 	$nc = $this->getCurrentNc();
 	if ( ! isset ($nc)) {
-		echo "No NC selected";
-		return;
-	}
-
-	$filter = new Zend_Session_Namespace('filter');
-	$filterType = $filter->type;
+		echo "<tr><td>";
+		echo "no NC selected";
+		echo "</td></tr>";
+	} else {
 	?>
-<fieldset>
-	<legend>NC info</legend>
-<table>
 	<tr>
 		<td>NC id</td>
 		<td style="background-color: lightgray;border:1px black solid"><?php echo $nc->getId() ?></td>
@@ -29,6 +29,9 @@
 	<tr>
 		<td colspan="2" style="background-color: lightgray; border:1px black solid"><?php echo $nc->getSummary() ?></td>
 	</tr>
+	<?php
+	}
+	?>
 </table>
 </fieldset>
 

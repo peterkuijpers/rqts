@@ -9,7 +9,7 @@ class Application_Model_User
 	protected $_lastname;
 	protected $_shortname;
 	protected $_email;
-	protected $_adminLevel;
+	protected $_adminlevel;
 
   public function __construct(array $options = null)
     {
@@ -123,13 +123,13 @@ class Application_Model_User
 	{
 		return $this->_shortname;
 	}
-	public function setAdminLevel( $adminLevel )
+	public function setAdminlevel( $adminlevel )
 	{
-		$this->_adminLevel = (boolean) $adminLevel;
+		$this->_adminlevel = $adminlevel;
 		return $this;
 	}
-	public function getAdminLevel()
+	public function getAdminlevel()
 	{
-		return $this->_adminLevel;
+		return $this->_adminlevel;
 	}
 }

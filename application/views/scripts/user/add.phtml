@@ -1,5 +1,20 @@
 <div id="page_title">Create new user</div>
 <hr />
 <?php
+$currentUser = $this->getCurrentUser();
+
+if ( ! $currentUser ) {
+	echo 'You must be logged in to access this page';
+	return;
+} elseif ( ! $currentUser->getAdminlevel() ) {
+	echo 'You must have admin level permission to access this function';
+	return;
+}
+// all tests passed
+$userId = $currentUser->getId();
+?>
+<?php
 echo $this->form->setAction($this->url());
 ?>
+<a href="<?php echo $this->url( array( 'controller' => 'user', 'action' => 'index' )) ?>">Back</a>
+<br /><br />

@@ -2,14 +2,17 @@
 <div id="page_title">Users</div>
 <hr />
 <?php
-$auth = Zend_Auth::getInstance();
-if ( ! $auth->hasIdentity()) {
+$currentUser = $this->getCurrentUser();
+
+if ( ! $currentUser ) {
 	echo 'You must be logged in to access this page';
 	return;
-} else {
-	$userId = $auth->getIdentity()->id;
+} elseif ( ! $currentUser->getAdminlevel() ) {
+	echo 'You must have admin level permission to access this function';
+	return;
 }
-
+// all tests passed
+$userId = $currentUser->getId();
 ?>
 
 

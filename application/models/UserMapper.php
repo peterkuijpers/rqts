@@ -59,7 +59,7 @@ class Application_Model_UserMapper
                   ->setFirstname($row->firstname)
                   ->setLastname($row->lastname)
                   ->setEmail($row->email)
-				  ->setAdminLevel($row->adminlevel)
+				  ->setAdminlevel($row->adminlevel)
 				  ->setShortname( $shortname);
 
 		$rowArr = $row->toArray();
@@ -79,7 +79,7 @@ class Application_Model_UserMapper
 					->setFirstname( $row->firstname)
 					->setLastname( $row->lastname)
 					->setEmail($row->email)
-					->setAdminLevel($row->adminlevel)
+					->setAdminlevel($row->adminlevel)
 					->setShortname( substr( $row->firstname,0,1)." ".$row->lastname);
             $entries[] = $entry;
         }

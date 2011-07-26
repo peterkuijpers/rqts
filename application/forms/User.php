@@ -64,7 +64,7 @@ class Application_Form_User extends Zend_Dojo_Form
             'label'      => 'Quality Asssurer',
         ));
 
-        $this->addElement('checkbox', 'administrator', array(
+        $this->addElement('checkbox', 'adminlevel', array(
             'label'      => 'Administrator',
         ));
 
