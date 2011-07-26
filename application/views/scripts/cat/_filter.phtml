@@ -1,13 +1,14 @@
 <?php $this->placeholder('filter')->captureStart() ?>
 
 <?php
+/*
 	$cat = new Zend_Session_Namespace('cat');
 	$nc = $this->getCurrentNc();
 	if ( ! isset ($nc)) {
 		echo "No NC selected";
 		return;
 	}
-
+*/
 	$filter = new Zend_Session_Namespace('filter');
 	$filterType = $filter->type;
 	?>

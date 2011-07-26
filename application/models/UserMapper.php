@@ -32,9 +32,9 @@ class Application_Model_UserMapper
 			'firstname' =>$user->getFirstname(),
 			'lastname' =>$user->getLastname(),
             'email'   => $user->getEmail(),
+			'adminlevel' => $user->getAdminLevel(),
 			'id' => $user->getId(),
         );
-		//tweeked here 
 		$id = $user->getId();
         if (null ===  $id ) {
             unset($data['id']);
@@ -59,6 +59,7 @@ class Application_Model_UserMapper
                   ->setFirstname($row->firstname)
                   ->setLastname($row->lastname)
                   ->setEmail($row->email)
+				  ->setAdminLevel($row->adminlevel)
 				  ->setShortname( $shortname);
 
 		$rowArr = $row->toArray();
@@ -78,6 +79,7 @@ class Application_Model_UserMapper
 					->setFirstname( $row->firstname)
 					->setLastname( $row->lastname)
 					->setEmail($row->email)
+					->setAdminLevel($row->adminlevel)
 					->setShortname( substr( $row->firstname,0,1)." ".$row->lastname);
             $entries[] = $entry;
         }

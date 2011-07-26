@@ -34,6 +34,7 @@ class Application_Form_User extends Zend_Dojo_Form
             'required'   => true,
             'label'      => 'First name',
         ));
+
         $this->addElement('text', 'lastname', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
@@ -49,6 +50,25 @@ class Application_Form_User extends Zend_Dojo_Form
             'required'   => true,
             'label'      => 'Email',
         ));
+
+        $this->addElement('checkbox', 'initiator', array(
+            'label'      => 'Initiator',
+			'checked'    => 'checked',
+        ));
+
+        $this->addElement('checkbox', 'focal', array(
+            'label'      => 'Focal',
+        ));
+
+        $this->addElement('checkbox', 'qa', array(
+            'label'      => 'Quality Asssurer',
+        ));
+
+        $this->addElement('checkbox', 'administrator', array(
+            'label'      => 'Administrator',
+        ));
+
+
 
         $this->addElement('submit', 'submit', array(
             'required' => false,
