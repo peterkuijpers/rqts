@@ -106,11 +106,33 @@ class Application_Model_CatMapper
 
 
 	}
-
-	public function approve( $id )
+	/*
+	 * Count the number of initiated NC's for a cetain usesr
+	 * @return integer
+	 */
+	public function countInitiators( $initiatorId )
 	{
-		$this->getDbTable()->update( array('statusid' => 3), array('id = ?' => $id) );
+		$select = $this->getDbTable()->select();
+		$select->from($this->getDbTable(),
+              array('COUNT(id) as count'))
+			->where('initiatorid = ?', $initiatorId);
+		$row = $this->getDbTable()->fetchRow($select);
+		return $row->count;
 	}
+	public function countOwners( $ownerId )
+	{
+		$select = $this->getDbTable()->select();
+		$select->from($this->getDbTable(),
+              array('COUNT(id) as count'))
+			->where('focalid = ?', $ownerId);
+		$row = $this->getDbTable()->fetchRow($select);
+		return $row->count;
+	}
+
+	/*
+	 * update the status for the nc
+	 * @params nc id, new status id
+	 */
 
 	public function delete( $id )
 	{

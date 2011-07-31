@@ -1,17 +1,15 @@
 <?php $this->placeholder('filter')->captureStart() ?>
 
 <?php
-/*
-	$cat = new Zend_Session_Namespace('cat');
-	$nc = $this->getCurrentNc();
-	if ( ! isset ($nc)) {
-		echo "No NC selected";
-		return;
-	}
-*/
 	$filter = new Zend_Session_Namespace('filter');
 	$filterType = $filter->type;
-	?>
+	$user = $this->getCurrentUser();
+	$catMapper = new Application_Model_CatMapper();
+	$initCount = $catMapper->countInitiators( $user->getId() );
+	$ownerCount = $catMapper->countOwners( $user->getId() );
+	echo $initCount;
+	echo $ownerCount;
+?>
 
 <form action="/cat/filter" method="post">
 	<fieldset>
@@ -20,8 +18,8 @@
 			<li><input type="radio" name="nc" value="AllNc" <?php if ( $filterType=='AllNc')echo 'checked' ?>  >All NC's</li>
 			<li><input type="radio" name="nc" value="MyNc" <?php if ( $filterType=='MyNc') echo 'checked' ?>>My NC's</li>
 			<li><ul>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nc_init" >nc initiator (3) </li>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">nc owner</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="nc_init" >nc initiator ( <?php echo $initCount ?> )</li>
+				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">nc owner ( <?php echo $ownerCount ?> )</li>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">nc approver</li>
 			</ul></li>
 			<li>

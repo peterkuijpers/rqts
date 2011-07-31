@@ -1,6 +1,7 @@
+
 <?php
 
-class Application_Form_CcItem extends Zend_Form
+class Application_Form_CcItem extends Zend_Dojo_Form
 {
     public function init()
     {
@@ -15,12 +16,12 @@ class Application_Form_CcItem extends Zend_Form
 			'size'	   => '80',
         ));
 
-		$this->addElement('select', 'ownerid', array(
+		$this->addElement('FilteringSelect', 'ownerid', array(
             'required'   => true,
             'label'      => 'Owner',
         ));
 
-        $this->addElement('text', 'duedate', array(
+        $this->addElement('DateTextBox', 'duedate', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'date'),
             'required'   => true,
@@ -28,12 +29,12 @@ class Application_Form_CcItem extends Zend_Form
             'label'      => 'Due date',
         ));
 
-		$this->addElement('text', 'completiondate', array(
+		$this->addElement('DateTextBox', 'completiondate', array(
             'filters'    => array('StringTrim'),
             'validators' => array( 'date'),
             'required'   => false,
 			'size'		=> 10,
-            'label'      => 'Comnpletion date',
+            'label'      => 'Completion date',
         ));
 
         $this->addElement('submit', 'submit', array(

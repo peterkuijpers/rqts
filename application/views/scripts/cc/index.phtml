@@ -5,12 +5,10 @@
 //check access
 
 // ensure user is logged in
-$auth = Zend_Auth::getInstance();
-if ( ! $auth->hasIdentity() ) {
+$user =$this->getCurrentUser();
+if ( ! $user ) {
 	echo 'You must be logged in to access this page';
 	return;
-} else {
-	$userId = $auth->getIdentity()->id;
 }
 //ensure an nc is selected
 $nc = $this->getCurrentNc();
@@ -28,23 +26,29 @@ if ( $nc->getStatusid() < 3 ) {     //   <3 is draft or submitted
 ?>
 
 <?php
-// only able to add items when status is NC_approved (3) or CC_rejected (5)
+// if currentuser  =focal  and (only able to add items when status is NC_approved (3) or CC_PlanRejected (5) )
 $stat = $nc->getStatusid();
-if ( $stat == 3 || $stat ==5 ) { ?>
-	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">New Action item</a>
+if ( ( $user->getId() == $nc->getFocalId() ) && ( $stat == 3 || $stat == 6 ) ) { ?>
+
+	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new' )) ?>">New Action item</a>
 	<br /><br />
 <?php
 }
 //
 // if status is CC_submitted and you are the assignee then approve or reject cc
 $cc = $this->getCurrentCc();
-if ( $stat == 4 && $cc->getAssigneeid() ==  $userId   ) {
+if ( $stat == 4 && $cc->getAssigneeid() ==  $user->getId()   ) {
 	?>
-	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">Approve this C & C</a>
-	<br /><br />
-	<a href=" <?php echo $this->url( array( 'controller' => 'ccitem', 'action' => 'new', )) ?>">Reject this C & C</a>
-	<br /><br />
+	Awaiting your action: 
+	<a href=" <?php echo $this->url( array( 'controller' => 'cc', 'action' => 'approveplan' )) ?>">Approve C&C</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href=" <?php echo $this->url( array( 'controller' => 'cc', 'action' => 'rejectplan', )) ?>">Reject C&C</a>
+	<hr/>
 <?php
+}
+
+if ( ! $this->actions ) {
+	echo "No actions found";
+	return;
 }
 
 ?>
@@ -96,5 +100,5 @@ if ( $stat == 4 && $cc->getAssigneeid() ==  $userId   ) {
 </table>
 <br />
 <?php
-//	echo $this->form->setAction($this->url());
+	echo $this->form->setAction($this->url());
 ?>

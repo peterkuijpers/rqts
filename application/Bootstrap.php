@@ -10,6 +10,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 //		$loader->registerNamespace(array('Foo_', 'Bar_'));
 
 	}
+
+	protected function _initSessions()
+	{
+		$defaultNamespace = new Zend_Session_Namespace();
+		if (!isset($defaultNamespace->initialized)) {
+			Zend_Session::regenerateId();
+			$defaultNamespace->initialized = true;
+		}
+	}
+
 	protected function _initDoctype()
 	{
         $this->bootstrap('view');
@@ -69,13 +79,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initStatuscodes()
 	{
 		$values = array(
-			'1' => 'NC_Draft',
-			'2' => 'NC_Submitted',
-			'3' => 'NC_Approved',
-			'4' => 'CC_Submitted',
+			'NC_Draft'		=> '1',
+			'NC_Submitted'	=> '2',
+			'NC_Approved'	=> '3',
+			'CC_Submitted'	=> '4',
+			'CC_PlanApproved' => '5',
+			'CC_PlanRejected' => '6',
 		);
 		Zend_Registry::set( 'status', $values );
+		$reverse = array(
+			'1'	=> 'NC_Draft',
+			'2' => 'NC_Submitted',
+			'3' => 'NC_Approved',
+			'4'	=> 'CC_Submitted',
+			'5' => 'CC_PlanApproved',
+			'6' => 'CC_PlanRejected',
+		);
+		Zend_Registry::set( 'reverseStatus', $reverse );
 	}
+
 
 	protected function _initDownloadDir()
 	{

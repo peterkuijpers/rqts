@@ -1,13 +1,12 @@
 <?php
 
 // ensure user is logged in
-$auth = Zend_Auth::getInstance();
-if ( ! $auth->hasIdentity()) {
+$user = $this->getCurrentUser();
+if ( ! $user ) {
 	echo 'You must be logged in to access this page';
 	return;
-} else {
-	$userId = $auth->getIdentity()->id;
 }
+$userId = $user->getId();
 ?>
 
 <div id="page_title">NonCompliance List</div>
@@ -15,7 +14,7 @@ if ( ! $auth->hasIdentity()) {
 		<a href=" <?php echo $this->url( array( 'controller' => 'cat', 'action' => 'add', )) ?>">New NC</a>
 		<br /><br />
 <?php
-		if ( ! $this->entries ) {
+		if ( ! $this->ncs ) {
 			echo "No entries found";
 			return;
 		}
@@ -27,35 +26,48 @@ if ( ! $auth->hasIdentity()) {
 		<th class="list_table">Date raised</th>
 		<th class="list_table">Status</th>
 		<th class="list_table">Assigned to</th>
+		<th class="list_table">C&C QA</th>
+
 	</tr>
 	<?php 
 		$user = new Application_Model_User();
 		$userMapper = new Application_Model_UserMapper();
+		$cc = new Application_Model_Cc();
+		$ccMapper = new Application_Model_CcMapper();
 
-		foreach( $this->entries as $entry ) { 
+		foreach( $this->ncs as $nc ) {
 	?>
 
 	<tr>
-		<td > <?php echo $this->escape( $entry->id ) ?> </td>
+		<td > <?php echo $this->escape( $nc->id ) ?> </td>
 		<td > <?php
-			$userMapper->find( $entry->initiatorid, $user );
+			$userMapper->find( $nc->initiatorid, $user );
 			echo $this->escape( $user->getShortname() );
 			?>
 		</td>
-		<td > <?php echo $this->escape( $entry->initdate ) ?> </td>
+		<td > <?php echo $this->escape( $nc->initdate ) ?> </td>
 		<td > <?php
 			$values = Zend_Registry::get('status');
-			echo $this->escape( $values[ $entry->statusid ] );
+			//search the array 
+			echo $this->escape( array_search( $nc->statusid, $values )) ;
 			?>
 		</td>
 		<td> <?php
-			// assigned to can be empty
-			if ($userMapper->find( $entry->focalid, $user ) )
+			// 'assigned-to' can be empty
+			if ($userMapper->find( $nc->focalid, $user ) )
 				echo $this->escape( $user->getShortname() );
 			?>
 		</td>
+		<td> <?php
+			// C&C QA
+			$ccMapper->find( $nc->id, $cc );
+			// 'cc_assignee can be empty
+			if ( $userMapper->find( $cc->assigneeid, $user  ))
+					echo $this->escape( $user->getShortname() );
+			?>
+		</td>
 		<td style="padding: 2px 10px 0px 10px">
-		<a href="<?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $entry->id )) ?>">details</a>
+		<a href="<?php echo $this->url( array( 'controller' => 'cat', 'action' => 'update', 'id' => $nc->id )) ?>">select</a>
 		</td>
 	</tr>
 	<?php } ?>

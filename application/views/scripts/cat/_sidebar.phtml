@@ -9,6 +9,7 @@
 <?php
 	$cat = new Zend_Session_Namespace('cat');
 	$nc = $this->getCurrentNc();
+	$statusValues = Zend_Registry::get('status');
 	if ( ! isset ($nc)) {
 		echo "<tr><td>";
 		echo "no NC selected";
@@ -21,7 +22,8 @@
 	</tr>
 	<tr>
 		<td>Status</td>
-		<td style="background-color: lightgray; border:1px black solid"><?php echo $this->getStatusDescription( $nc->getStatusid() ) ?></td>
+		<td style="background-color: lightgray; border:1px black solid"><?php  echo $this->escape( array_search( $nc->statusid, $statusValues )) ;
+ ?></td>
 	</tr>
 	<tr>
 		<td colspan="2">Summary</td>

@@ -2,8 +2,6 @@
 
 class CatController extends Zend_Controller_Action
 {
-	public  $_filtered;
-
     public function init()
     {
     }
@@ -23,6 +21,7 @@ class CatController extends Zend_Controller_Action
     {
 
 		$cat = new Application_Model_CatMapper();
+		$cc = new Application_Model_CcMapper();
 		// 
 		// get filter
 		$filter = new Zend_Session_Namespace('filter');
@@ -30,10 +29,9 @@ class CatController extends Zend_Controller_Action
 		$id = $filter->ncid;
 		if ( $type == "MyNc" ) {
 			// get 'my id'
-			$auth = Zend_Auth::getInstance();
-			$loginId = $auth->getIdentity()->id;
+			$user = $this->view->getCurrentUser();
 			// get all nc's that belong to me
-			$ncs = $cat->fetchAllMy( $loginId );
+			$ncs = $cat->fetchAllMy( $user->getId() );
 		} elseif ( $type == "NcId" ) {
 //			Zend_Debug::dump(  $id );
 			$nc = new Application_Model_Cat();
@@ -41,10 +39,11 @@ class CatController extends Zend_Controller_Action
 			$ncs = array();
 			if ( $nc->getId() != null)
 				$ncs[] = $nc;
-		} else  // default select all
+		} else { // default select all
 			$ncs = $cat->fetchAll();
+		}
 		//
-		$this->view->entries = $ncs;
+		$this->view->ncs = $ncs;
     }
 
 	/**
@@ -53,30 +52,19 @@ class CatController extends Zend_Controller_Action
 	 */
     public function updateAction()
     {
-        // action body
-
-
 		$form = new Application_Form_Cat();
 		$this->setGeneralFormParams($form);
 		$this->view->form = $form;
 		if ($this->getRequest()->isPost()) {
-			$formData = $this->getRequest()->getPost();
-			//
-			// check if it is 'approval'
-			if ( isset($formData['approve']) ) {
-				$catMapper = new Application_Model_CatMapper();
-				$catMapper->approve( $formData['id'] );
-				$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was changed to "NC Approved" status'));
-
-				$this->_helper->redirector('index');
-			}
-			// check raised-by is me and status =draft
-			// get login id
-			$auth = Zend_Auth::getInstance();
-			$loginId = $auth->getIdentity()->id;
-			if ( $loginId == $formData['initiatorid'] && $formData['statusid'] == 1 ) {
+			$formData = $this->getRequest()->getPost();	
+			/*****************************************
+			 * check raised-by is me and status =draft
+			 * get login id
+			 **************************************/
+			$user = $this->view->getCurrentUser();
+			if ( $user->getId() == $formData['initiatorid'] && $formData['statusid'] == 1 ) {
 				//owner of the nc can update the nc or submit it
-				echo '>>Owner can update draft';
+				$this->_helper->flashMessenger->addMessage( array('infoMsg' =>'>>Owner can update draft' ));
 				$this->setUpdateFormParams($form);
 			} else {
 				echo '>>Display only';
@@ -89,18 +77,29 @@ class CatController extends Zend_Controller_Action
 				// 
 				$cat = new Application_Model_Cat($formData);
 				if ( isset( $formData['submit']))  {
-					//submit form change status to NC_Submitted
-					$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was submitted'));
-					$cat->setStatusid( 2 );
-				} else
-					$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Non Compliance was saved'));
-					//enter line in log
-					$this->view->logMessage( array( 'user'=>$loginId, 'ncid'=>$cat->getId(), 'action'=>'Nc Updated', 'message'=>'NC_Draft'));
+					if ( ! $this->additionalCheck( $cat ) )
+						return;
+					else {
+						// Submit
+						$cat->setStatusid( 2 );
+						$msg = 'NonCompliance was submitted';
+						//enter line in log
+						$logMsg = 'NC Submitted';
+					}
+				} else {
+					// Save
+					$msg = 'NonCompliance was saved';
+					//log msg
+					$logMsg = 'NC Draft saved';
+				}
 
 				// save to database
 				$mapper  = new Application_Model_CatMapper();
 				$mapper->save($cat);
-
+				// show message
+				$this->_helper->flashMessenger->addMessage(array('successMsg'=>$msg));
+				//add line in log
+				$this->view->logMessage( array( 'user'=>$user->getShortname(), 'ncid'=>$cat->getId(), 'action'=>'Nc status updated', 'message'=>$logMsg));
 				// add to registry
 				$nc = new Zend_Session_Namespace('cat');
 				$nc->id = $cat->getId();
@@ -110,30 +109,27 @@ class CatController extends Zend_Controller_Action
 				$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Non Compliance not submitted or saved'));
 				$form->populate($formData);
 			}
-		} else {
+		} else {   // not post
 			$id = $this->_getParam('id', 0);
 			if ($id > 0) {
 				$cat = new Application_Model_Cat();
-				$mapper = new Application_Model_CatMapper();
-				$data = $mapper->find( $id, $cat);
+				$catMapper = new Application_Model_CatMapper();
+				$data = $catMapper->find( $id, $cat);
 				//
 				// check raised-by is me and status =draft
 				// get login id
-				$auth = Zend_Auth::getInstance();
-				$loginId = $auth->getIdentity()->id;
-				if ( $loginId == $data['initiatorid'] && $data['statusid'] == 1 ) {
+				$user = $this->view->getCurrentUser();
+				if ( $user->getId() == $data['initiatorid'] && $data['statusid'] == 1 ) {
 					//owner of the nc can update the nc or submit it
-					echo '>>Owner can update draft';
+					$this->_helper->flashMessenger->addMessage( array('infoMsg' =>'>>Owner can update draft<<' ));
+
+//					echo '>>Owner can update draft';
 					$this->setUpdateFormParams($form);
 				} else {
 					// display only
-					echo '>>Display only';
+//					echo '>>Display only';
+					$this->_helper->flashMessenger->addMessage( array('infoMsg' =>'>> Display only <<' ));
 					$this->setViewFormParams( $form);
-					// check if current user is focal and nc-status = nc_submitted
-					// if this is the case then allow user to approve nc
-					if ( $loginId == $data['focalid'] &&$data['statusid'] == 2 ) {
-						$this->setApproveFormParams($form);
-					}
 				}
  
 				$form->populate($data);
@@ -147,8 +143,7 @@ class CatController extends Zend_Controller_Action
 
     public function addAction()
     {
-        // action body
-		// action body
+		$user = $this->view->getCurrentUser();
 		$form = new Application_Form_Cat();
 		// alter form
 		$this->setGeneralFormParams($form);
@@ -171,12 +166,9 @@ class CatController extends Zend_Controller_Action
 						$newCatId = $mapper->save($cat);
 
 						//enter line in log
-						$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>'P Kuijpers', 'action'=>'New Nc', 'message'=>'NC_Draft'));
-						
+						$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>$user->getShortname(), 'action'=>'New Nc', 'message'=>'NC_Draft'));
 						/*************
-						*
 						* create new (empty) CC
-						*
 						**************/
 						$cc = new Application_Model_Cc();
 						$cc->setId( $newCatId);
@@ -186,16 +178,13 @@ class CatController extends Zend_Controller_Action
 
 						// add to registry
 						$nc = new Zend_Session_Namespace('cat');
-						$nc->id = $formData[100];
+						$nc->id = $newCatId;
 						//
 						$msg = "NonCompliance with id '".$newCatId. "' added successfully";
  						$this->_helper->flashMessenger->addMessage(array('successMsg' => $msg));
 						$this->_helper->redirector('index');
 
-					} else {
-						// extrea validation errors
-						$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Extra validation errors'));
-					}
+					} 
 				} else {
 					// save nc with status nc_draft
 					$mapper  = new Application_Model_CatMapper();
@@ -203,8 +192,7 @@ class CatController extends Zend_Controller_Action
 					$ncid =  $mapper->save($cat);
 
 					//enter line in log
-					$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>'P Kuijpers', 'action'=>'New Nc', 'message'=>'NC_Draft'));
-
+					$this->view->logMessage( array('ncid'=>$newCatId, 'user'=>$user->getShortname(), 'action'=>'New Nc', 'message'=>'NC_Draft'));
 					/*************
 					*
 					* create new (empty) CC
@@ -248,6 +236,29 @@ class CatController extends Zend_Controller_Action
 
 	}
 
+	/*
+	 * Approve a nc
+	 *
+	*/
+	public function approveAction()
+	{
+		$nc = $this->view->getCurrentNc();
+		$user = $this->view->getCurrentUser();
+		// update database
+		$catMapper = new Application_Model_CatMapper();
+		$nc->setStatusid( 3 );
+		$catMapper->save( $nc );
+		// message to screen
+		$str = "NonCompliance ".$nc->getId(). ", status changed to 'Approved'";
+		$this->_helper->flashMessenger->addMessage(array('successMsg'=>$str));
+		// enter in log
+		$this->view->logMessage( array( 'user'=>$user->getShortname(), 'ncid'=>$nc->getId(), 'action'=>'Nc status changed', 'message'=>'NC_Approved'));
+
+		$this->_helper->redirector('index');
+
+
+	}
+
 	private function setGeneralFormParams( $form )
 	{
 		$userMapper = new Application_Model_UserMapper();
@@ -257,28 +268,13 @@ class CatController extends Zend_Controller_Action
 		// id
 		$form->id->setAttrib( 'readonly', true );
 		// status
-		$statlist = Zend_Registry::get('status');
-		$form->statusid->setMultiOptions( $statlist);
+		$form->statusid->setMultiOptions( Zend_Registry::get('reverseStatus') );
 		// initiator
 		$form->initiatorid->setMultiOptions( $allShortnames);
 		//focalid
 		$form->focalid->setMultiOptions( $allShortnamesWithEmpty);
 	}
-	/**
-	 * Form settings for approval of nc
-	 * @param <type> $form
-	 */
-	private function setApproveFormParams( $form )
-	{
-		// add submit button to form
 
-      $approve = new Zend_Form_Element_Submit('approve');
-      $approve->setLabel('Approve')
-			->setAttrib('onclick',"return confirm('Are you sure you want to approve?')" );
-
-
-	  $form->addElement( $approve );
-	}
 	/**
 	 * View form sets form params for only viewing
 	 * @param <type> $form
@@ -295,6 +291,10 @@ class CatController extends Zend_Controller_Action
 		$form->details->setAttrib( 'readonly', true );
 	}
 
+	/*
+	 * Adjust form for updates (like adding a submit and a save button)
+ 	 *
+	 */
 	private function setUpdateFormParams( $form )
 	{
 		// add submit button to form
@@ -320,12 +320,10 @@ class CatController extends Zend_Controller_Action
 		$form->statusid->setValue( 1 );
 		// initiatorid
 		// set to current login user
-		$auth = Zend_Auth::getInstance();
-        $id = $auth->getIdentity()->id;
-		$form->initiatorid->setValue( $id );
+		$user = $this->view->getCurrentUser();
+		$form->initiatorid->setValue( $user->getId() );
 		// date  raised default to today
 		$form->initdate->setValue( date('Y-m-d') );
-
 		// add submit button to form
         $form->addElement('submit', 'submit', array(
             'required' => false,
@@ -350,9 +348,9 @@ class CatController extends Zend_Controller_Action
 	{
 		//
 		$result = true;
-		if (  !$cat->focalid ) {
+		if (  ! $cat->focalid ) {
 			$result = false;
-			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Please assign the NonCompliance'));
+			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'Please assign the NonCompliance to someone'));
 		} elseif ( $cat->focalid == $cat->initiatorid ){
 			$result = false;
 			$this->_helper->flashMessenger->addMessage(array('errorMsg'=>'You can not assign the NonCompliance to yourself'));

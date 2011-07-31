@@ -40,6 +40,11 @@ class AuthController extends Zend_Controller_Action
 		//unregister cat
 		$nc = new Zend_Session_Namespace('cat');
 		unset( $nc->id);
+		//clear my-nc's filter
+		$filter = new Zend_Session_Namespace('filter');
+		$filter->type = "AllNc";
+
+
 	//	unset( $nc );
 	//	echo "logging out the cat/nc";
 		//
@@ -77,10 +82,3 @@ class AuthController extends Zend_Controller_Action
         return $authAdapter;
     }
 }
-
-
-
-
-
-
-

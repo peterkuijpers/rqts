@@ -4,8 +4,9 @@
 //check access
 
 // ensure user is logged in
-$auth = Zend_Auth::getInstance();
-if ( ! $auth->hasIdentity()) {
+
+$user = $this->getCurrentUser();
+if ( ! $user ) {
 	echo 'You must be logged in to access this page';
 	return;
 }
@@ -16,11 +17,25 @@ if ( ! $nc ) {
 	return;
 }
 
-?>
+// if status is 'NC_Submitted then we can have two situations:
+// awaiting approval or when you are the focal then 'please approve'
+if ( array_search( $nc->getStatusid(), Zend_Registry::get( 'status') ) == 'NC_Submitted' ) {
+	if ( $user->getId() == $nc->getFocalid() ) {
+		echo "Awaiting your approval: ";
+		?>
+		<a href="<?php echo $this->url( array( 'controller'=>'cat', 'action'=>'approve', 'id'=> $nc->getId() )) ?>" ><input type="button" value="Approve"></a>
+		<?php
+//		$this->view->_helper->flashMessenger->addMessage(array('successMsg'=>'Awaiting approval of focal'));
+	} else {
+//		$this->_helper->flashMessenger->addMessage(array('successMsg'=>'Awaiting your approval'));
+		echo "Awaiting approval by Focal";
+	}
+	echo "<hr />";
+}
 
-<a href="<?php echo $this->url( array( 'controller'=>'attachment', 'action'=>'index', 'id'=> $nc->getId() )) ?>" ><input type="button" value="Attachments"></a>
-
-
-<?php
+// show form
 echo $this->form->setAction($this->url());
 ?>
+<!-- // add 'attchements' button -->
+<a href="<?php echo $this->url( array( 'controller'=>'attachment', 'action'=>'index', 'id'=> $nc->getId() )) ?>" ><input type="button" value="Attachments"></a><br /><br />
+

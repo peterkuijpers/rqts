@@ -7,8 +7,13 @@ class Application_Form_Cat extends Zend_Dojo_Form
         /* Form Elements & Other Definitions Here ... */
 	    $this->setName("cat");
         $this->setMethod('post');
+//		$this->setDecorators(array(
+//		    'FormElements',
+//			array('HtmlTag', array('tag' => 'table')),
+//				'Form',
+//		));
 
-        $this->addElement('text', 'id', array(
+        $this->addElement('NumberTextBox', 'id', array(
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
                 array('StringLength', false, array(0, 20)),
@@ -17,6 +22,18 @@ class Application_Form_Cat extends Zend_Dojo_Form
             'label'      => 'Id',
 			'readonly'	=> 'readonly',
         ));
+/*
+  		$this->id->setDecorators( array(
+
+				'viewHelper',
+				'Errors',
+			    array(array('data' => 'HtmlTag'), array('tag' => 'td', 'class' => 'element')),
+				array('Label', array('tag' => 'td')),
+				array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
+		));
+		
+*/
+	
 
         $this->addElement('FilteringSelect', 'statusid', array(
             'required'  => true,
@@ -48,7 +65,7 @@ class Application_Form_Cat extends Zend_Dojo_Form
             'label'      => 'Assigned to',
         ));
 
-        $this->addElement('text', 'summary', array(
+        $this->addElement('TextBox', 'summary', array(
             'filters'    => array('StringTrim'),
             'validators' => array(  array('StringLength', false, array(0, 100))
 			),
@@ -57,13 +74,40 @@ class Application_Form_Cat extends Zend_Dojo_Form
 			'size'		 => '100',
         ));
 
-        $this->addElement('textarea', 'details', array(
+        $this->addElement('Textarea', 'details', array(
             'required' => false,
             'label'    => 'Details',
-			'cols'	   => '80',
-			'rows'	   => '3',
+			'style'    => 'width: 400px;height: 200px',
         ));
-
-
     }
+/*
+ *
+
+	public function loadDefaultDecorators()
+	{
+		// -- wipe all
+		$this->clearDecorators();
+
+		// -- just add form elements
+		// -- this is the default
+		$this->setDecorators(array(
+		   'FormElements',
+			array('HtmlTag', array('tag' => 'dl')),
+			'Form'
+		));
+	// -- form element decorators
+		$this->setElementDecorators(array(
+			"ViewHelper",
+			array("Label"),
+			array("HtmlTag", array(
+				"tag"   => "div",
+				"class" =>"element",
+			)),
+		));
+		
+
+		return $this;
+	}
+ *
+ */
 }
